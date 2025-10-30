@@ -134,11 +134,9 @@ a:focus-visible {
 }
 @keyframes header-slideout {
   from {
-    transform: scale(1.02);
     border-bottom: 5px solid #00ffa3;
   }
   to {
-    transform: scale(1);
     border-bottom: 1px solid var(--border);
   }
 }
