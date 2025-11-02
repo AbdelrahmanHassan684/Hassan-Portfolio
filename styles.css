@@ -228,6 +228,69 @@ a:focus-visible {
     display: none;
   }
 }
+.video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .video-background video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Play overlay for deferred media */
+      .media-player {
+        position: relative;
+        display: block;
+      }
+      .media-player iframe,
+      .media-player video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border: 0;
+      }
+
+      .media-player .play-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.25);
+      }
+
+      .play-button {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      }
+
+      .play-button::before {
+        content: "";
+        display: inline-block;
+        margin-left: 6px;
+        border-style: solid;
+        border-width: 12px 0 12px 20px;
+        border-color: transparent transparent transparent #111;
+      }
+
+      .media-player:focus {
+        outline: 2px solid #6fa8ff;
+      }
+      /* Responsive styles for small screens */
 
 /* Sections */
 .section {
