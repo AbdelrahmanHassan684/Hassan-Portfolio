@@ -33,9 +33,17 @@
       }
 
       /* Play overlay for deferred media */
-      .media-player { position: relative; display: block; }
+      .media-player {
+        position: relative;
+        display: block;
+      }
       .media-player iframe,
-      .media-player video { width: 100%; height: 100%; display: block; border: 0; }
+      .media-player video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border: 0;
+      }
 
       .media-player .play-overlay {
         position: absolute;
@@ -44,7 +52,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        background: rgba(0,0,0,0.25);
+        background: rgba(0, 0, 0, 0.25);
       }
 
       .play-button {
@@ -55,10 +63,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
       }
 
-      .play-button::before{
+      .play-button::before {
         content: "";
         display: inline-block;
         margin-left: 6px;
@@ -67,7 +75,9 @@
         border-color: transparent transparent transparent #111;
       }
 
-      .media-player:focus { outline: 2px solid #6fa8ff; }
+      .media-player:focus {
+        outline: 2px solid #6fa8ff;
+      }
       /* Responsive styles for small screens */
 
       /* ...existing code... */
@@ -450,10 +460,14 @@
                 </p>
               </div>
               <div class="media">
-                <div class="iframe-wrap iframe-wrap2 media-player"
-                     data-media-type="iframe"
-                     data-src="https://www.youtube.com/embed/yaHb61tZCxA"
-                     role="button" tabindex="0" aria-label="Play EchoHand video">
+                <div
+                  class="iframe-wrap iframe-wrap2 media-player"
+                  data-media-type="iframe"
+                  data-src="https://www.youtube.com/embed/yaHb61tZCxA"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Play EchoHand video"
+                >
                   <div class="play-overlay">
                     <div class="play-button" aria-hidden="true"></div>
                   </div>
@@ -461,10 +475,14 @@
                 </div>
               </div>
               <div class="media">
-                <div class="iframe-wrap iframe-wrap3 media-player"
-                     data-media-type="iframe"
-                     data-src="https://drive.google.com/file/d/1eGBT26NRzh8VWw-b1CJYixTYJVy-uMyQ/preview"
-                     role="button" tabindex="0" aria-label="Open EchoHand paper preview">
+                <div
+                  class="iframe-wrap iframe-wrap3 media-player"
+                  data-media-type="iframe"
+                  data-src="https://drive.google.com/file/d/1eGBT26NRzh8VWw-b1CJYixTYJVy-uMyQ/preview"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Open EchoHand paper preview"
+                >
                   <div class="play-overlay">
                     <div class="play-button" aria-hidden="true"></div>
                   </div>
@@ -495,10 +513,14 @@
                 </p>
               </div>
               <div class="media">
-                <div class="iframe-wrap media-player"
-                     data-media-type="iframe"
-                     data-src="Media/Videos/Untitled design.mp4"
-                     role="button" tabindex="0" aria-label="Play sample transcript video">
+                <div
+                  class="iframe-wrap media-player"
+                  data-media-type="iframe"
+                  data-src="Media/Videos/Untitled design.mp4"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Play sample transcript video"
+                >
                   <div class="play-overlay">
                     <div class="play-button" aria-hidden="true"></div>
                   </div>
@@ -510,17 +532,42 @@
             <article class="card project reveal" id="faculty-coding-lab">
               <div class="card-top">
                 <h3 class="card-title">
-                  <span class="card-title-header"
-                    >Echolex</span
+                  <span class="card-title-header">Echolex</span
                   ><span class="badge">EdTech</span>
                 </h3>
                 <p class="eco">
-                  Echolex is a Telegram chatbot I built to tutor Arabic learners. It accepts text or voice, transcribes speech, reasons over chat history, and replies with either text or synthesized audio while maintaining succinct memory for continuity. I designed role-aware prompts, tested with students, and refined handlers for /start, echo, and message routing. I developed Echolex in partnership with an OpenAI mentor; our YC accelerator application ranked in the top 5%. As a solo extension, I built a tool that transcribes audio in any language and generates accurate English subtitle files. Together, these tools expand access to learning and real-time communication.
+                  Echolex is a Telegram chatbot I built to tutor Arabic
+                  learners. It accepts text or voice, transcribes speech,
+                  reasons over chat history, and replies with either text or
+                  synthesized audio while maintaining succinct memory for
+                  continuity. I designed role-aware prompts, tested with
+                  students, and refined handlers for /start, echo, and message
+                  routing. I developed Echolex in partnership with an OpenAI
+                  mentor; our YC accelerator application ranked in the top 5%.
+                  As a solo extension, I built a tool that transcribes audio in
+                  any language and generates accurate English subtitle files.
+                  Together, these tools expand access to learning and
+                  real-time communication.
                 </p>
               </div>
               <div class="media">
-                <div style="width: 100; height: auto; display: flex; justify-content: center;">
-                  <div class="media-player" data-media-type="video" data-src="Media/Videos/videoplayback.mp4" role="button" tabindex="0" aria-label="Play Echolex demo" style="width:50%; height:auto;">
+                <div
+                  style="
+                    width: 100;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                  "
+                >
+                  <div
+                    class="media-player"
+                    data-media-type="video"
+                    data-src="Media/Videos/videoplayback.mp4"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Play Echolex demo"
+                    style="width: 50%; height: auto"
+                  >
                     <video controls preload="none" aria-hidden="false"></video>
                     <div class="play-overlay">
                       <div class="play-button" aria-hidden="true"></div>
@@ -544,8 +591,7 @@
                   hidden
                 >
                   <div class="repo-card-inner">
-                    <div class="repo-card-head">
-                    </div>
+                    <div class="repo-card-head"></div>
                     <div class="readme prose" data-readme></div>
                   </div>
                 </div>
@@ -569,14 +615,37 @@
                 </p>
               </div>
               <div class="media">
-                <div class="iframe-wrap iframe-wrap2 iframe media-player"
-                     data-media-type="iframe"
-                     data-src="Media/Videos/Team 1 - MindBite - Demo Day Video.mp4"
-                     role="button" tabindex="0" aria-label="Play LaunchX presentation">
+                <div
+                  class="iframe-wrap iframe-wrap2 iframe media-player"
+                  data-media-type="iframe"
+                  data-src="Media/Videos/Team 1 - MindBite - Demo Day Video.mp4"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Play LaunchX presentation"
+                >
                   <div class="play-overlay">
                     <div class="play-button" aria-hidden="true"></div>
                   </div>
                 </div>
+              </div>
+            </article>
+            <article class="card project reveal" id="robotics-note">
+              <div class="card-top">
+                <h3 class="card-title card-title-header" style="top: -15%">
+                  El-Shams Club Running Team
+                </h3>
+                <span class="badge" style="top: -10%">EdTech</span>
+                <p class="muted eco">
+                  In ninth grade, I identified the absence of a running program
+                  at El-Shams, a prominent sports club. I founded the El-Shams
+                  Running Club as an open, community-oriented initiative,
+                  recruiting and coaching 60 members in weekly sessions. I
+                  secured approximately $400 per year for transportation and
+                  venue fees and coordinated logistics and safety. I also
+                  organized four marathons at heritage sites and Cairo Stadium,
+                  engaging 200 runners. This remains one of my most
+                  meaningful activities.
+                </p>
               </div>
             </article>
 
@@ -887,14 +956,15 @@
     <script>
       (function () {
         function injectIframe(container, src) {
-          if (container.querySelector('iframe')) return;
-          var iframe = document.createElement('iframe');
+          if (container.querySelector("iframe")) return;
+          var iframe = document.createElement("iframe");
           iframe.src = src;
-          iframe.loading = 'lazy';
-          iframe.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay';
-          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+          iframe.loading = "lazy";
+          iframe.allow =
+            "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; autoplay";
+          iframe.referrerPolicy = "strict-origin-when-cross-origin";
           iframe.allowFullscreen = true;
-          iframe.title = 'Embedded media';
+          iframe.title = "Embedded media";
           container.appendChild(iframe);
         }
 
@@ -902,30 +972,35 @@
           var type = el.dataset.mediaType;
           var src = el.dataset.src;
           if (!src) return;
-          if (type === 'iframe') {
+          if (type === "iframe") {
             injectIframe(el, src);
-          } else if (type === 'video') {
-            var video = el.querySelector('video');
+          } else if (type === "video") {
+            var video = el.querySelector("video");
             if (!video) return;
             if (!video.src) {
               video.src = src;
               video.load();
             }
-            video.play().catch(function(){ /* ignore play rejection */ });
+            video.play().catch(function () {
+              /* ignore play rejection */
+            });
           }
-          var overlay = el.querySelector('.play-overlay');
+          var overlay = el.querySelector(".play-overlay");
           if (overlay) overlay.remove();
         }
 
-        document.addEventListener('click', function (e) {
-          var el = e.target.closest('.media-player');
+        document.addEventListener("click", function (e) {
+          var el = e.target.closest(".media-player");
           if (!el) return;
           activateMedia(el);
         });
 
-        document.addEventListener('keydown', function (e) {
-          if (e.key !== 'Enter' && e.key !== ' ') return;
-          var el = document.activeElement && document.activeElement.closest && document.activeElement.closest('.media-player');
+        document.addEventListener("keydown", function (e) {
+          if (e.key !== "Enter" && e.key !== " ") return;
+          var el =
+            document.activeElement &&
+            document.activeElement.closest &&
+            document.activeElement.closest(".media-player");
           if (!el) return;
           e.preventDefault();
           activateMedia(el);
