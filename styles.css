@@ -903,6 +903,7 @@ textarea:focus-visible,
 }
 
 /* Accessibility */
+/* Accessibility */
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -929,12 +930,28 @@ textarea:focus-visible,
   font-size: 1rem;
 }
 
+/* Embed iframes (YouTube + PDF) inside iframe-wrap */
+.iframe-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.iframe-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .iframe-wrap2 {
   margin-top: 8rem !important;
 }
+
 .iframe-wrap3 {
   margin-top: 6rem !important;
+  height: 80vh; /* PDF visible height (adjust if you want) */
 }
+
 .iframe-wrap2::after,
 .iframe-wrap3::after {
   content: "EchoHand Test Plan Video";
@@ -973,25 +990,6 @@ textarea:focus-visible,
   top: -5%;
 }
 
-/* PDF (PDF.js) render inside iframe-wrap */
-.media-player[data-media-type="pdf"] {
-  cursor: pointer;
-}
-
-.media-player .pdf-scroll {
-  position: absolute;
-  inset: 0;
-  overflow: auto;
-  padding: 12px;
-}
-
-.media-player .pdf-canvas {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto 12px;
-}
-
 .selected-work {
   padding-bottom: 42px;
 }
@@ -1000,6 +998,7 @@ textarea:focus-visible,
   transform: translateX(1rem) translateY(-2px) scale(1.01);
   box-shadow: 5px 5px 10px #00f89f;
 }
+
 .flex {
   display: flex;
   justify-content: space-between;
@@ -1018,6 +1017,8 @@ textarea:focus-visible,
 }
 .about-me-image {
   padding-top: 3rem;
+}
+
   /* z-index: 1000; */
   transition: transform 0.3 var(--easing);
 }
