@@ -20,41 +20,41 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Background FX -->
-    <div class="bg fx-grid" aria-hidden="true"></div>
-    <div class="bg fx-glow" aria-hidden="true"></div>
+    <!-- Genoo-inspired dynamic background -->
+    <canvas id="bgCanvas" class="bg-canvas" aria-hidden="true"></canvas>
+    <div class="bg-fog" aria-hidden="true"></div>
+    <div class="bg-vignette" aria-hidden="true"></div>
 
-    <div class="video-background" aria-hidden="true">
-      <video muted autoplay loop playsinline preload="metadata">
-        <source src="Media/Videos/Background-Animation3.mp4" type="video/mp4" />
-      </video>
-    </div>
-
-    <!-- Header -->
-    <header class="header" role="banner">
-      <div class="wrap header-inner">
-        <a href="#/home" class="brand" aria-label="Go to Home">
-          <span class="logo">AO</span>
-          <span class="brand-text">Abdelrahman Osman</span>
+    <!-- Glass pill navbar -->
+    <header class="topbar" role="banner">
+      <div class="wrap topbar-pill">
+        <a href="#/home" class="topbar-brand" aria-label="Go to Home">
+          <span class="topbar-brand-code">&lt;Abdelrahman /&gt;</span>
         </a>
 
-        <nav class="nav" aria-label="Primary">
-          <a class="nav-link" href="#/impact">Impact</a>
-          <a class="nav-link" href="#/journey">Journey</a>
-          <a class="nav-link" href="#/skills">Skills</a>
-          <a class="nav-link" href="#/work">Work</a>
-          <a class="nav-link" href="#/honors">Honors</a>
-          <a class="nav-link" href="#/resume">Resume</a>
-          <a class="nav-link" href="#/courses">Courses</a>
-          <a class="nav-link" href="#/contact">Contact</a>
-          <a class="nav-link" href="#/about">About</a>
+        <p class="topbar-tagline">
+          Building human-centered CS/EE, one project at a time
+        </p>
+
+        <nav class="topbar-nav" aria-label="Primary">
+          <a class="topbar-link" href="#/about">About</a>
+          <a class="topbar-link" href="#/work">Projects</a>
+          <a class="topbar-link" href="#/honors">Activities &amp; Honors</a>
+          <a class="topbar-link" href="#/contact">Contact</a>
+
+          <button
+            class="topbar-settings"
+            type="button"
+            aria-label="Quick actions"
+            data-open-cmd
+          >
+            ⚙
+          </button>
 
           <button
             class="nav-toggle"
             type="button"
-            aria-expanded="false"
-            aria-controls="cmd"
-            aria-label="Open menu"
+            aria-label="Menu"
             data-open-cmd
           >
             <span></span><span></span><span></span>
@@ -64,19 +64,7 @@
     </header>
 
     <!-- Main app container -->
-    <main id="main" class="main" tabindex="-1">
-      <noscript>
-        <section class="section">
-          <div class="wrap">
-            <h1 class="page-title">Abdelrahman Osman — Portfolio</h1>
-            <p class="muted">
-              This site uses JavaScript to load pages (Home, Impact, Work, etc.).
-              Please enable JavaScript.
-            </p>
-          </div>
-        </section>
-      </noscript>
-    </main>
+    <main id="main" class="main" tabindex="-1"></main>
 
     <!-- Footer -->
     <footer class="footer" role="contentinfo">
@@ -109,7 +97,12 @@
       <div class="cmd-panel" role="document">
         <div class="cmd-top">
           <div class="cmd-title">Jump to…</div>
-          <button class="cmd-close" type="button" aria-label="Close" data-close-cmd>
+          <button
+            class="cmd-close"
+            type="button"
+            aria-label="Close"
+            data-close-cmd
+          >
             ✕
           </button>
         </div>
@@ -125,64 +118,112 @@
 
         <ul id="cmdList" class="cmd-list" role="listbox" aria-label="Results"></ul>
 
-        <p class="cmd-hint">Shortcut: <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> · Close: <kbd>Esc</kbd></p>
+        <p class="cmd-hint">
+          Shortcut: <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> · Close: <kbd>Esc</kbd>
+        </p>
       </div>
     </div>
 
-    <!-- =========================
-         PAGE TEMPLATES (ROUTER)
-         Only one is rendered at a time.
-         ========================= -->
+    <!-- ======================================================
+         PAGE TEMPLATES (HASH ROUTER)
+         ====================================================== -->
 
-    <!-- HOME -->
+    <!-- HOME (Genoo-inspired hero + sections) -->
     <template id="tpl-home">
-      <section class="section hero">
-        <div class="wrap hero-inner reveal">
-          <p class="eyebrow">STEM High School for Boys – 6th of October</p>
-          <h1 class="title">
-            Programmer & builder<br />
-            <span class="title-accent">turning CS into tools</span><br />
-            that measurably improve lives.
-          </h1>
+      <section class="home-stage">
+        <section id="home" class="hero-genoo">
+          <div class="wrap hero-genoo-inner">
+            <div class="hero-left">
+              <p class="hero-kicker hero-anim" style="--d:0s;">
+                FROM STEM TO HUMAN‑CENTERED ENGINEERING
+              </p>
 
-          <p class="sub">
-            Human-centered CS/EE. Accessibility, reliability, and measurable impact.
-          </p>
+              <h1 class="hero-name hero-anim" style="--d:0.08s;">
+                Abdelrahman<br />
+                <span class="hero-name-accent">Osman</span
+                ><span class="hero-cursor" aria-hidden="true"></span>
+              </h1>
 
-          <div class="hero-ctas">
-            <a class="btn" href="#/impact">See Impact</a>
-            <a class="btn btn-ghost" href="#/contact">Contact</a>
-            <a class="btn btn-ghost" href="#/work">Selected Work</a>
+              <p class="hero-desc hero-anim" style="--d:0.16s;">
+                Hey! I’m Abdelrahman Osman, a programmer and builder using CS/EE
+                to remove real barriers—from assistive robotics to secure-by-design
+                communication systems.
+              </p>
+
+              <ul class="hero-chips hero-anim" style="--d:0.24s;" aria-label="Highlights">
+                <li class="hero-chip">Robotics</li>
+                <li class="hero-chip">AI/ML</li>
+                <li class="hero-chip">CS/EE</li>
+              </ul>
+
+              <div class="hero-actions hero-anim" style="--d:0.32s;">
+                <a class="btn-genoo btn-genoo-primary" href="#/work">
+                  <span class="icon-play" aria-hidden="true"></span>
+                  See My Work
+                </a>
+                <a class="btn-genoo btn-genoo-outline" href="#/journey">My Story</a>
+                <a class="hero-link" href="#/contact">Let’s Talk</a>
+              </div>
+            </div>
+
+            <div class="hero-right hero-anim" style="--d:0.18s;">
+              <div class="avatar-ring" aria-label="Profile photo">
+                <!-- CHANGE THIS PATH IF YOUR PHOTO NAME/FOLDER DIFFERS -->
+                <img
+                  src="Media/Images/WhatsApp_Image_2025-03-07_at_20.17.18%5B1%5D.jpg"
+                  alt="Abdelrahman Osman"
+                  loading="eager"
+                  decoding="async"
+                  data-fallback
+                />
+
+                <span class="float-icon fi-1" aria-hidden="true">&lt;/&gt;</span>
+                <span class="float-icon fi-2" aria-hidden="true">{ }</span>
+                <span class="float-icon fi-3" aria-hidden="true">AI</span>
+              </div>
+            </div>
           </div>
 
-          <div class="home-grid">
-            <article class="card reveal">
-              <h2 class="card-h">About</h2>
-              <p class="muted non-center">
-                The mission, mindset, and how I measure progress.
-              </p>
-              <a class="btn btn-ghost" href="#/about">Open About</a>
-            </article>
+          <a class="scroll-down" href="#/impact" aria-label="Go to Impact page">
+            <span class="scroll-down-icon" aria-hidden="true"></span>
+          </a>
+        </section>
 
-            <article class="card reveal">
-              <h2 class="card-h">Resume</h2>
-              <p class="muted non-center">
-                View the PDF resume in-browser, or open it in a new tab.
-              </p>
-              <a class="btn btn-ghost" href="#/resume">Open Resume</a>
-            </article>
+        <!-- Home “sections” like the reference: quick panels -->
+        <section class="section">
+          <div class="wrap">
+            <header class="section-head reveal">
+              <h2 class="page-title">Quick Overview</h2>
+              <p class="muted">Jump into the key parts of my portfolio.</p>
+            </header>
 
-            <article class="card reveal">
-              <h2 class="card-h">Work</h2>
-              <p class="muted non-center">
-                Robotics, NLP, EdTech, and venture execution.
-              </p>
-              <a class="btn btn-ghost" href="#/work">Open Work</a>
-            </article>
+            <div class="home-grid">
+              <article class="card reveal">
+                <h3 class="card-h">Selected Work</h3>
+                <p class="muted non-center">
+                  Robotics, NLP, EdTech, and venture execution—media included.
+                </p>
+                <a class="btn btn-ghost" href="#/work">Open Work</a>
+              </article>
+
+              <article class="card reveal">
+                <h3 class="card-h">Impact</h3>
+                <p class="muted non-center">
+                  Projects that shipped, people reached, competitions, and results.
+                </p>
+                <a class="btn btn-ghost" href="#/impact">Open Impact</a>
+              </article>
+
+              <article class="card reveal">
+                <h3 class="card-h">Resume</h3>
+                <p class="muted non-center">
+                  View my resume PDF directly in the browser.
+                </p>
+                <a class="btn btn-ghost" href="#/resume">Open Resume</a>
+              </article>
+            </div>
           </div>
-        </div>
-
-        <div class="scroll-hint" aria-hidden="true">Use the menu or Ctrl/⌘+K</div>
+        </section>
       </section>
     </template>
 
@@ -239,7 +280,9 @@
         <div class="wrap">
           <header class="section-head reveal">
             <h1 class="page-title">Impact in Numbers</h1>
-            <p class="muted">Real projects. Real impact. Built from scratch with determination.</p>
+            <p class="muted">
+              Real projects. Real impact. Built from scratch with determination.
+            </p>
           </header>
 
           <div class="grid stats-grid">
@@ -312,7 +355,8 @@
                 <div class="timeline-year">2021</div>
                 <h2 class="timeline-title">Waking Up</h2>
                 <p class="muted non-center">
-                  Studying on autopilot. First cracks of curiosity. I start seeing where I’m weak and where I can grow.
+                  Studying on autopilot. First cracks of curiosity. I start seeing
+                  where I’m weak and where I can grow.
                 </p>
               </article>
             </li>
@@ -322,8 +366,9 @@
                 <div class="timeline-year">2022/23</div>
                 <h2 class="timeline-title">Seeing Clearly</h2>
                 <p class="muted non-center">
-                  I drop the “convenient blur,” lean into advanced physics and CS, and build habits of disciplined iteration:
-                  draft, feedback, rewrite, repeat.
+                  I drop the “convenient blur,” lean into advanced physics and CS,
+                  and build habits of disciplined iteration: draft, feedback,
+                  rewrite, repeat.
                 </p>
               </article>
             </li>
@@ -333,8 +378,9 @@
                 <div class="timeline-year">2024</div>
                 <h2 class="timeline-title">Transformation</h2>
                 <p class="muted non-center">
-                  I find my direction: human-centered engineering. EchoHand takes shape. I travel to the U.S., meet like-minded
-                  builders, and learn to create opportunities.
+                  I find my direction: human-centered engineering. EchoHand takes
+                  shape. I travel to the U.S., meet like-minded builders, and learn
+                  to create opportunities.
                 </p>
               </article>
             </li>
@@ -344,9 +390,11 @@
                 <div class="timeline-year">2025</div>
                 <h2 class="timeline-title">Trajectory</h2>
                 <p class="muted non-center">
-                  Focused academic track in CS/EE. UCSC SIP research on secure wireless via deep-learning autoencoders; LaunchX
-                  venture work (first revenue!); mentoring as a YYGS Ambassador. The program never “finishes”; I just keep shipping
-                  better versions of myself.
+                  Focused academic track in CS/EE. UCSC SIP research on secure
+                  wireless via deep-learning autoencoders; LaunchX venture work
+                  (first revenue!); mentoring as a YYGS Ambassador. The program
+                  never “finishes”; I just keep shipping better versions of
+                  myself.
                 </p>
               </article>
             </li>
@@ -366,7 +414,9 @@
         <div class="wrap">
           <header class="section-head reveal">
             <h1 class="page-title">Skills</h1>
-            <p class="muted">From AI models to full‑stack apps, powered by modern tools.</p>
+            <p class="muted">
+              From AI models to full‑stack apps, powered by modern tools.
+            </p>
           </header>
 
           <h2 class="mini-head reveal">Built with Modern Tech</h2>
@@ -393,7 +443,9 @@
               <div class="skill-tag">AI/ML</div>
               <h3>TensorFlow</h3>
               <p class="level">★★★★☆</p>
-              <p class="muted non-center">Projects: Neural network training, image classification.</p>
+              <p class="muted non-center">
+                Projects: Neural network training, image classification.
+              </p>
             </article>
 
             <article class="skill-card reveal">
@@ -407,42 +459,54 @@
               <div class="skill-tag">AI/ML</div>
               <h3>OpenCV</h3>
               <p class="level">★★★★☆</p>
-              <p class="muted non-center">Projects: Computer vision, image processing.</p>
+              <p class="muted non-center">
+                Projects: Computer vision, image processing.
+              </p>
             </article>
 
             <article class="skill-card reveal">
               <div class="skill-tag">Data</div>
               <h3>Pandas</h3>
               <p class="level">★★★★★</p>
-              <p class="muted non-center">Projects: Data manipulation & analysis.</p>
+              <p class="muted non-center">
+                Projects: Data manipulation & analysis.
+              </p>
             </article>
 
             <article class="skill-card reveal">
               <div class="skill-tag">Data</div>
               <h3>NumPy</h3>
               <p class="level">★★★★★</p>
-              <p class="muted non-center">Projects: Numerical computing, arrays.</p>
+              <p class="muted non-center">
+                Projects: Numerical computing, arrays.
+              </p>
             </article>
 
             <article class="skill-card reveal">
               <div class="skill-tag">Web</div>
               <h3>HTML/CSS/JS</h3>
               <p class="level">★★★★☆</p>
-              <p class="muted non-center">Projects: Responsive, accessible web apps.</p>
+              <p class="muted non-center">
+                Projects: Responsive, accessible web apps.
+              </p>
             </article>
 
             <article class="skill-card reveal">
               <div class="skill-tag">Core</div>
               <h3>Problem Solving</h3>
               <p class="level">★★★★★</p>
-              <p class="muted non-center">Algorithms, optimization, debugging.</p>
+              <p class="muted non-center">
+                Algorithms, optimization, debugging.
+              </p>
             </article>
 
             <article class="skill-card reveal">
               <div class="skill-tag">Core</div>
               <h3>Engineering</h3>
               <p class="level">★★★★☆</p>
-              <p class="muted non-center">System design, prototyping, testing.</p>
+              <p class="muted non-center">
+                System design, prototyping, testing.
+              </p>
             </article>
 
             <article class="skill-card reveal">
@@ -456,14 +520,18 @@
               <div class="skill-tag">Science</div>
               <h3>Computational Physics</h3>
               <p class="level">★★★★☆</p>
-              <p class="muted non-center">Simulation, signal processing, analysis.</p>
+              <p class="muted non-center">
+                Simulation, signal processing, analysis.
+              </p>
             </article>
 
             <article class="skill-card reveal">
               <div class="skill-tag">Communication</div>
               <h3>Research & Writing</h3>
               <p class="level">★★★★☆</p>
-              <p class="muted non-center">Literature review, reports, documentation.</p>
+              <p class="muted non-center">
+                Literature review, reports, documentation.
+              </p>
             </article>
           </div>
 
@@ -494,13 +562,18 @@
                 </div>
 
                 <p class="eco">
-                  Deaf and mute individuals often face barriers when communicating with people unfamiliar with sign language,
-                  limiting expression and understanding. With an estimated 70 million deaf people worldwide, inclusive solutions
-                  are vital. Our project addresses this gap through a wearable glove that enables two-way communication. First,
-                  the glove detects and interprets sign-language hand movements, converting them into audible speech so hearing
-                  users can understand without knowing the signs. Second, it incorporates speech-to-text, capturing spoken
-                  language and displaying it on an LCD for the deaf user to read. Together, these features translate sign into
-                  speech and speech into text, enabling smoother, accessible interactions.
+                  Deaf and mute individuals often face barriers when communicating
+                  with people unfamiliar with sign language, limiting expression
+                  and understanding. With an estimated 70 million deaf people
+                  worldwide, inclusive solutions are vital. Our project addresses
+                  this gap through a wearable glove that enables two-way
+                  communication. First, the glove detects and interprets sign-language
+                  hand movements, converting them into audible speech so hearing
+                  users can understand without knowing the signs. Second, it
+                  incorporates speech-to-text, capturing spoken language and
+                  displaying it on an LCD for the deaf user to read. Together,
+                  these features translate sign into speech and speech into text,
+                  enabling smoother, accessible interactions.
                 </p>
               </div>
 
@@ -513,7 +586,9 @@
                   data-media-type="youtube"
                   data-src="https://www.youtube.com/embed/yaHb61tZCxA"
                 >
-                  <div class="play-overlay"><div class="play-button" aria-hidden="true"></div></div>
+                  <div class="play-overlay">
+                    <div class="play-button" aria-hidden="true"></div>
+                  </div>
                 </div>
 
                 <div
@@ -528,7 +603,13 @@
                     <div class="pdf-title">EchoHand Research Paper (PDF)</div>
                     <div class="pdf-actions">
                       <span class="btn btn-ghost">View PDF</span>
-                      <a class="btn" href="Final%20Version%20Echohand%20Research%20Paper%20MDPI.pdf" target="_blank" rel="noopener">Open in New Tab</a>
+                      <a
+                        class="btn"
+                        href="Final%20Version%20Echohand%20Research%20Paper%20MDPI.pdf"
+                        target="_blank"
+                        rel="noopener"
+                        >Open in New Tab</a
+                      >
                     </div>
                   </div>
                 </div>
@@ -544,12 +625,15 @@
                 </div>
 
                 <p class="eco">
-                  I developed an AI- and API-based system to render complex Arabic poetry, and other Arabic media such as films,
-                  videos, and comics, into accessible English while preserving meaning and cultural nuance. The platform combines
-                  Arabic speech/text ingestion with context-aware translation and a post-editing layer that resolves idioms,
-                  metaphors, and allusions, producing readable English prose or subtitles alongside literal glosses. By
-                  prioritizing semantic fidelity over word-for-word equivalence, it bridges a persistent communication gap between
-                  Arabic and English audiences.
+                  I developed an AI- and API-based system to render complex Arabic
+                  poetry, and other Arabic media such as films, videos, and comics,
+                  into accessible English while preserving meaning and cultural
+                  nuance. The platform combines Arabic speech/text ingestion with
+                  context-aware translation and a post-editing layer that resolves
+                  idioms, metaphors, and allusions, producing readable English prose
+                  or subtitles alongside literal glosses. By prioritizing semantic
+                  fidelity over word-for-word equivalence, it bridges a persistent
+                  communication gap between Arabic and English audiences.
                 </p>
               </div>
 
@@ -562,7 +646,9 @@
                   data-media-type="video"
                   data-src="Media/Videos/Untitled%20design.mp4"
                 >
-                  <div class="play-overlay"><div class="play-button" aria-hidden="true"></div></div>
+                  <div class="play-overlay">
+                    <div class="play-button" aria-hidden="true"></div>
+                  </div>
                 </div>
               </div>
             </article>
@@ -576,18 +662,27 @@
                 </div>
 
                 <p class="eco">
-                  Echolex is a Telegram chatbot I built to tutor Arabic learners. It accepts text or voice, transcribes speech,
-                  reasons over chat history, and replies with either text or synthesized audio while maintaining succinct memory
-                  for continuity. I designed role-aware prompts, tested with students, and refined handlers for /start, echo, and
-                  message routing. I developed Echolex in partnership with an OpenAI mentor; our YC accelerator application ranked
-                  in the top 5%. As a solo extension, I built a tool that transcribes audio in any language and generates accurate
-                  English subtitle files. Together, these tools expand access to learning and real-time communication.
+                  Echolex is a Telegram chatbot I built to tutor Arabic learners.
+                  It accepts text or voice, transcribes speech, reasons over chat
+                  history, and replies with either text or synthesized audio while
+                  maintaining succinct memory for continuity. I designed role-aware
+                  prompts, tested with students, and refined handlers for /start,
+                  echo, and message routing. I developed Echolex in partnership
+                  with an OpenAI mentor; our YC accelerator application ranked in
+                  the top 5%. As a solo extension, I built a tool that transcribes
+                  audio in any language and generates accurate English subtitle
+                  files. Together, these tools expand access to learning and
+                  real-time communication.
                 </p>
 
                 <div class="note-row">
-                  <a class="btn btn-ghost" href="https://github.com/AbdelrahmanOthman33/Talentsorb-AI" target="_blank" rel="noopener">
-                    View GitHub Repo
-                  </a>
+                  <a
+                    class="btn btn-ghost"
+                    href="https://github.com/AbdelrahmanOthman33/Talentsorb-AI"
+                    target="_blank"
+                    rel="noopener"
+                    >View GitHub Repo</a
+                  >
                 </div>
               </div>
 
@@ -600,7 +695,9 @@
                   data-media-type="video"
                   data-src="Media/Videos/videoplayback.mp4"
                 >
-                  <div class="play-overlay"><div class="play-button" aria-hidden="true"></div></div>
+                  <div class="play-overlay">
+                    <div class="play-button" aria-hidden="true"></div>
+                  </div>
                 </div>
               </div>
             </article>
@@ -614,10 +711,13 @@
                 </div>
 
                 <p class="eco">
-                  At the highly selective LaunchX (admit rate under 15%), I attended on a full aid ($6,995). I studied business
-                  strategy, negotiated with industry professionals, and bootstrapped my first startup (Mind-Pite), shipping a
-                  revenue-generating app, leading go-to-market strategy, and building a resilient founder mindset through 40
-                  hours per week, 200 hours total of collaborating and forming business and technological plans.
+                  At the highly selective LaunchX (admit rate under 15%), I attended
+                  on a full aid ($6,995). I studied business strategy, negotiated
+                  with industry professionals, and bootstrapped my first startup
+                  (Mind-Pite), shipping a revenue-generating app, leading go-to-market
+                  strategy, and building a resilient founder mindset through 40 hours
+                  per week, 200 hours total of collaborating and forming business
+                  and technological plans.
                 </p>
               </div>
 
@@ -630,7 +730,9 @@
                   data-media-type="video"
                   data-src="Media/Videos/Team%201%20-%20MindBite%20-%20Demo%20Day%20Video.mp4"
                 >
-                  <div class="play-overlay"><div class="play-button" aria-hidden="true"></div></div>
+                  <div class="play-overlay">
+                    <div class="play-button" aria-hidden="true"></div>
+                  </div>
                 </div>
               </div>
             </article>
@@ -644,11 +746,14 @@
                 </div>
 
                 <p class="eco">
-                  In ninth grade, I identified the absence of a running program at El-Shams, a prominent sports club. I founded
-                  the El-Shams Running Club as an open, community-oriented initiative, recruiting and coaching 60 members in
-                  weekly sessions. I secured approximately $400 per year for transportation and venue fees and coordinated
-                  logistics and safety. I also organized four marathons at heritage sites and Cairo Stadium, engaging 200 runners.
-                  This remains one of my most meaningful activities.
+                  In ninth grade, I identified the absence of a running program at
+                  El-Shams, a prominent sports club. I founded the El-Shams Running
+                  Club as an open, community-oriented initiative, recruiting and
+                  coaching 60 members in weekly sessions. I secured approximately
+                  $400 per year for transportation and venue fees and coordinated
+                  logistics and safety. I also organized four marathons at heritage
+                  sites and Cairo Stadium, engaging 200 runners. This remains one
+                  of my most meaningful activities.
                 </p>
               </div>
             </article>
@@ -668,16 +773,21 @@
         <div class="wrap">
           <header class="section-head reveal">
             <h1 class="page-title">Honors & Awards</h1>
-            <p class="muted">Highlights (replace any placeholders with exact titles/details if needed).</p>
+            <p class="muted">
+              Highlights (replace any placeholders with exact titles/details if needed).
+            </p>
           </header>
 
           <div class="grid honor-cards">
             <article class="honor-card reveal">
               <div class="honor-icon" aria-hidden="true">🏆</div>
               <div class="honor-tag">Competition</div>
-              <h2 class="honor-title">Egypt International Science and Technology Fair (EISTF) in Cairo</h2>
+              <h2 class="honor-title">
+                Egypt International Science and Technology Fair (EISTF) in Cairo
+              </h2>
               <p class="muted non-center">
-                Top 0.063%, Gold Medal among 1,600 teams at the Egypt International Science and Technology Fair.
+                Top 0.063%, Gold Medal among 1,600 teams at the Egypt International
+                Science and Technology Fair.
               </p>
               <ul class="honor-tags">
                 <li>Robotics</li><li>Engineering</li><li>Innovation</li>
@@ -750,7 +860,13 @@
               <div class="pdf-title">Resume (PDF)</div>
               <div class="pdf-actions">
                 <span class="btn btn-ghost">View PDF</span>
-                <a class="btn" href="Final%20Resume%20.pdf" target="_blank" rel="noopener">Open in New Tab</a>
+                <a
+                  class="btn"
+                  href="Final%20Resume%20.pdf"
+                  target="_blank"
+                  rel="noopener"
+                  >Open in New Tab</a
+                >
               </div>
             </div>
           </div>
@@ -775,18 +891,18 @@
           <div class="grid skill-cards">
             <article class="skill-card reveal"><h3>Electric Engineering Basics</h3><p class="level">★★★★★</p></article>
             <article class="skill-card reveal"><h3>Digital Signal Processing</h3><p class="level">★★★★☆</p></article>
-            <article class="skill-card reveal"><h3>Analog & Digital Communication</h3><p class="level">★★★★☆</p></article>
-            <article class="skill-card reveal"><h3>Information Theory & Coding/Source & Channel Coding</h3><p class="level">★★★★☆</p></article>
-            <article class="skill-card reveal"><h3>Cellular & Core Networks</h3><p class="level">★★★★★</p></article>
+            <article class="skill-card reveal"><h3>Analog &amp; Digital Communication</h3><p class="level">★★★★☆</p></article>
+            <article class="skill-card reveal"><h3>Information Theory &amp; Coding/Source &amp; Channel Coding</h3><p class="level">★★★★☆</p></article>
+            <article class="skill-card reveal"><h3>Cellular &amp; Core Networks</h3><p class="level">★★★★★</p></article>
             <article class="skill-card reveal"><h3>Linear Algebra</h3><p class="level">★★★★★</p></article>
-            <article class="skill-card reveal"><h3>Calculus & Matrix Calculus (gradients, Jacobians, chain rule)</h3><p class="level">★★★★☆</p></article>
+            <article class="skill-card reveal"><h3>Calculus &amp; Matrix Calculus (gradients, Jacobians, chain rule)</h3><p class="level">★★★★☆</p></article>
             <article class="skill-card reveal"><h3>Optimization for ML</h3><p class="level">★★★★★</p></article>
-            <article class="skill-card reveal"><h3>Neural Networks & Deep learning</h3><p class="level">★★★★☆</p></article>
-            <article class="skill-card reveal"><h3>Probabilistic ML & Variational Inference</h3><p class="level">★★★★☆</p></article>
+            <article class="skill-card reveal"><h3>Neural Networks &amp; Deep learning</h3><p class="level">★★★★☆</p></article>
+            <article class="skill-card reveal"><h3>Probabilistic ML &amp; Variational Inference</h3><p class="level">★★★★☆</p></article>
             <article class="skill-card reveal"><h3>Random Processes</h3><p class="level">★★★★☆</p></article>
             <article class="skill-card reveal"><h3>Becoming an Entrepreneur</h3><p class="level">★★★★☆</p></article>
             <article class="skill-card reveal"><h3>Marketing Course</h3><p class="level">★★★★☆</p></article>
-            <article class="skill-card reveal"><h3>Politics, Laws & Economics</h3><p class="level">★★★★☆</p></article>
+            <article class="skill-card reveal"><h3>Politics, Laws &amp; Economics</h3><p class="level">★★★★☆</p></article>
           </div>
 
           <div class="page-actions reveal">
@@ -854,4 +970,5 @@
     </template>
   </body>
 </html>
+
 
