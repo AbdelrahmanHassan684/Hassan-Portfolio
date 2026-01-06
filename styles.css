@@ -732,6 +732,18 @@ textarea:focus-visible,
   color: #00f89f;
   text-align: center;
 }
+
+/* Skill rating stars */
+.skill-card .level {
+  margin: 0;
+  color: #f5c542; /* gold */
+}
+
+/* If you use spans for filled/empty stars, you can use these too:
+.skill-card .star.filled { color: #f5c542; }
+.skill-card .star.empty  { color: #9aa0a6; }
+*/
+
 /* Honors */
 .honor-cards {
   grid-template-columns: repeat(12, 1fr);
