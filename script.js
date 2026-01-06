@@ -1,5 +1,7 @@
 /* Genoo-inspired UX + dynamic background + hash routing
-   Works on GitHub Pages (hash routes).
+   + NEW Story page
+   + Click-to-light glow on frames/cards
+   + Auto-typing hero name
 */
 (() => {
   "use strict";
@@ -9,6 +11,7 @@
   // ----------------------------
   const qs = (s, el = document) => el.querySelector(s);
   const qsa = (s, el = document) => Array.from(el.querySelectorAll(s));
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   function setYear() {
     const y = new Date().getFullYear();
@@ -20,12 +23,67 @@
     return encodeURIComponent(s).replace(/[!'()*]/g, (c) => "%" + c.charCodeAt(0).toString(16));
   }
 
+  const reduceMotion =
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+
+  // ----------------------------
+  // Click-to-light glow (tables/frames/cards)
+  // ----------------------------
+  const GLOW_SELECTOR = [
+    ".glow-surface",
+    ".card",
+    ".stat-card",
+    ".skill-card",
+    ".honor-card",
+    ".media-player",
+    ".topbar-pill",
+    ".cmd-panel",
+    ".gallery img",
+  ].join(",");
+
+  let activeGlow = null;
+  let pulseTimer = null;
+
+  function setGlow(el) {
+    // remove previous
+    if (activeGlow && activeGlow !== el) {
+      activeGlow.classList.remove("is-active", "is-pulse");
+    }
+    activeGlow = el;
+
+    if (!el) return;
+
+    // add active
+    el.classList.add("is-active");
+
+    // restart pulse animation
+    el.classList.remove("is-pulse");
+    // force reflow so animation restarts
+    void el.offsetWidth;
+    el.classList.add("is-pulse");
+
+    clearTimeout(pulseTimer);
+    pulseTimer = setTimeout(() => el.classList.remove("is-pulse"), 980);
+  }
+
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest(GLOW_SELECTOR);
+    if (t) setGlow(t);
+    else setGlow(null);
+  });
+
+  document.addEventListener("focusin", (e) => {
+    const t = e.target.closest(GLOW_SELECTOR);
+    if (t) setGlow(t);
+  });
+
   // ----------------------------
   // Route config
   // ----------------------------
   const ROUTES = [
     { id: "home", label: "Home", template: "tpl-home", title: "Home" },
     { id: "about", label: "About", template: "tpl-about", title: "About" },
+    { id: "story", label: "Story", template: "tpl-story", title: "Story" },
     { id: "impact", label: "Impact", template: "tpl-impact", title: "Impact" },
     { id: "journey", label: "Journey", template: "tpl-journey", title: "Journey" },
     { id: "skills", label: "Skills", template: "tpl-skills", title: "Skills" },
@@ -131,6 +189,7 @@
     iframe.referrerPolicy = "strict-origin-when-cross-origin";
     player.appendChild(iframe);
 
+    // small "Open PDF" button
     const open = document.createElement("a");
     open.href = src;
     open.target = "_blank";
@@ -157,6 +216,9 @@
   }
 
   document.addEventListener("click", (e) => {
+    // If user clicked a link inside a media overlay, let it behave normally
+    if (e.target.closest(".media-player a")) return;
+
     const player = e.target.closest(".media-player");
     if (!player) return;
     activateMedia(player);
@@ -165,6 +227,7 @@
   document.addEventListener("keydown", (e) => {
     const player = e.target && e.target.closest ? e.target.closest(".media-player") : null;
     if (!player) return;
+
     if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
       e.preventDefault();
       activateMedia(player);
@@ -181,7 +244,7 @@
         <stop offset='100%' stop-color='#073224'/>
       </linearGradient></defs>
       <rect width='100%' height='100%' fill='url(#g)'/>
-      <rect x='14' y='14' width='${w - 28}' height='${h - 28}' rx='14' ry='14' fill='none' stroke='rgba(42,208,83,0.35)' stroke-width='2'/>
+      <rect x='14' y='14' width='${w - 28}' height='${h - 28}' rx='14' ry='14' fill='none' stroke='rgba(25,255,138,0.35)' stroke-width='2'/>
       <g fill='#b9ffe5' font-family='system-ui, sans-serif' font-size='28'>
         <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>${text}</text>
       </g>
@@ -357,6 +420,50 @@
   });
 
   // ----------------------------
+  // Auto-typing hero name
+  // ----------------------------
+  let typingRunId = 0;
+
+  async function runTyping(container) {
+    const lines = qsa(".typed-line[data-typed]", container);
+    if (!lines.length) return;
+
+    typingRunId += 1;
+    const myRun = typingRunId;
+
+    // reset
+    lines.forEach((el) => (el.textContent = ""));
+
+    // reduced motion: show instantly
+    if (reduceMotion) {
+      lines.forEach((el) => (el.textContent = el.dataset.typed || ""));
+      return;
+    }
+
+    // small delay after page mount/hero entrance
+    await sleep(220);
+    if (myRun !== typingRunId) return;
+
+    // type each line sequentially
+    for (const el of lines) {
+      const text = el.dataset.typed || "";
+      for (let i = 0; i < text.length; i++) {
+        if (myRun !== typingRunId) return;
+        el.textContent = text.slice(0, i + 1);
+        await sleep(48);
+      }
+      await sleep(140);
+      if (myRun !== typingRunId) return;
+    }
+  }
+
+  function startHeroEntranceIfPresent(container) {
+    const hero = qs(".hero-genoo", container);
+    if (!hero) return;
+    requestAnimationFrame(() => hero.classList.add("hero-in"));
+  }
+
+  // ----------------------------
   // Router render
   // ----------------------------
   const main = qs("#main");
@@ -370,14 +477,15 @@
     });
   }
 
-  function startHeroEntranceIfPresent(container) {
-    const hero = qs(".hero-genoo", container);
-    if (!hero) return;
-    requestAnimationFrame(() => hero.classList.add("hero-in"));
-  }
-
   function renderRoute(routeId) {
     if (!main) return;
+
+    // stop any running typing (new route => new run id)
+    typingRunId += 1;
+
+    // clear any active glow selection
+    if (activeGlow) activeGlow.classList.remove("is-active", "is-pulse");
+    activeGlow = null;
 
     const route = ROUTE_MAP.get(routeId) || ROUTE_MAP.get("home");
     const tpl = route ? qs(`#${route.template}`) : null;
@@ -401,6 +509,9 @@
     initContactForm(main);
     startHeroEntranceIfPresent(main);
 
+    // typing only if hero exists
+    runTyping(main).catch(() => {});
+
     setActiveNav(routeId);
     renderCmdList(cmdInput ? cmdInput.value : "");
   }
@@ -417,7 +528,6 @@
     const canvas = qs("#bgCanvas");
     if (!canvas) return;
 
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     const ctx = canvas.getContext("2d", { alpha: true });
 
     let w = 0, h = 0, dpr = 1;
@@ -453,9 +563,9 @@
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // particle density
       const target = Math.floor((w * h) / 22000);
       const count = Math.max(80, Math.min(180, target));
+
       stars = Array.from({ length: count }, () => ({
         x: rand(0, w),
         y: rand(0, h),
@@ -474,7 +584,7 @@
 
     function drawGlow(gx, gy, gr, intensity) {
       const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
-      grad.addColorStop(0, `rgba(42, 208, 83, ${0.10 * intensity})`);
+      grad.addColorStop(0, `rgba(25, 255, 138, ${0.08 * intensity})`);
       grad.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -488,11 +598,9 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      // base
       ctx.fillStyle = "rgba(0,0,0,0.88)";
       ctx.fillRect(0, 0, w, h);
 
-      // pointer parallax
       const px = (pointer.x - 0.5) * 40;
       const py = (pointer.y - 0.5) * 30;
 
@@ -500,6 +608,7 @@
         if (!reduceMotion) {
           g.x += g.vx;
           g.y += g.vy;
+
           if (g.x < -g.r) g.x = w + g.r;
           if (g.x > w + g.r) g.x = -g.r;
           if (g.y < -g.r) g.y = h + g.r;
@@ -508,9 +617,8 @@
         drawGlow(g.x + px, g.y + py, g.r, 1);
       }
 
-      // stars
       ctx.save();
-      ctx.shadowColor = "rgba(42,208,83,0.55)";
+      ctx.shadowColor = "rgba(25,255,138,0.50)";
       ctx.shadowBlur = 10;
 
       for (const s of stars) {
@@ -523,13 +631,12 @@
           if (s.y > h + 10) s.y = -10;
         }
 
-        ctx.fillStyle = `rgba(42,208,83,${s.a})`;
+        ctx.fillStyle = `rgba(25,255,138,${s.a})`;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // connections
       ctx.shadowBlur = 0;
       ctx.lineWidth = 1;
 
@@ -541,7 +648,7 @@
           const d = Math.hypot(dx, dy);
           if (d > maxD) continue;
           const alpha = (1 - d / maxD) * 0.10;
-          ctx.strokeStyle = `rgba(42,208,83,${alpha})`;
+          ctx.strokeStyle = `rgba(25,255,138,${alpha})`;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
@@ -595,4 +702,5 @@
   window.addEventListener("hashchange", onRouteChange);
   window.addEventListener("DOMContentLoaded", boot);
 })();
+
 
