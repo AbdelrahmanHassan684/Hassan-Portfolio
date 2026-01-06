@@ -939,48 +939,5 @@
         // (already handled above by changing to data-src in the markup)
       })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.js"></script>
-<script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
-
-  async function renderPdfInto(container, url) {
-    const pdf = await pdfjsLib.getDocument(url).promise;
-
-    const scroller = document.createElement("div");
-    scroller.className = "pdf-scroll";
-    container.innerHTML = "";
-    container.appendChild(scroller);
-
-    for (let p = 1; p <= pdf.numPages; p++) {
-      const page = await pdf.getPage(p);
-      const viewport = page.getViewport({ scale: 1.5 });
-
-      const canvas = document.createElement("canvas");
-      canvas.className = "pdf-canvas";
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      scroller.appendChild(canvas);
-
-      await page.render({ canvasContext: ctx, viewport }).promise;
-    }
-  }
-
-  document.addEventListener("click", (e) => {
-    const player = e.target.closest(".media-player");
-    if (!player) return;
-
-    const type = player.dataset.mediaType;
-    const src = player.dataset.src;
-
-    if (type === "pdf") {
-      renderPdfInto(player, src);
-    }
-    // else: your existing iframe/youtube logic stays as-is
-  });
-</script>
-
   </body>
 </html>
