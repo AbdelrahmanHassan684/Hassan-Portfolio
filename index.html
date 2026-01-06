@@ -934,8 +934,10 @@
           e.preventDefault();
           activateMedia(el);
         });
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.js"></script>
+<script src="script.js"></script>
 
-        // Prevent accidental preloads by ensuring no src attributes remain on targeted elements
+    // Prevent accidental preloads by ensuring no src attributes remain on targeted elements
         // (already handled above by changing to data-src in the markup)
       })();
     </script>
