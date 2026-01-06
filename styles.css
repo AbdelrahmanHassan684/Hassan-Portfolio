@@ -952,6 +952,7 @@ textarea:focus-visible,
     ),
     linear-gradient(transparent, transparent);
 }
+
 .iframe-wrap3::after {
   content: "EchoHand Research Paper";
 }
@@ -971,14 +972,20 @@ textarea:focus-visible,
   position: absolute;
   top: -5%;
 }
-.pdf-scroll {
-  width: 100%;
-  height: 100%;
+
+/* PDF (PDF.js) render inside iframe-wrap */
+.media-player[data-media-type="pdf"] {
+  cursor: pointer;
+}
+
+.media-player .pdf-scroll {
+  position: absolute;
+  inset: 0;
   overflow: auto;
   padding: 12px;
 }
 
-.pdf-canvas {
+.media-player .pdf-canvas {
   width: 100%;
   height: auto;
   display: block;
@@ -988,11 +995,11 @@ textarea:focus-visible,
 .selected-work {
   padding-bottom: 42px;
 }
+
 .hover-animation:hover {
   transform: translateX(1rem) translateY(-2px) scale(1.01);
   box-shadow: 5px 5px 10px #00f89f;
 }
-
 .flex {
   display: flex;
   justify-content: space-between;
