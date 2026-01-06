@@ -1154,3 +1154,85 @@ textarea:focus-visible,
       border-box;
   box-shadow: var(--shadow);
 }
+/* ---------------------------
+   FIX 1: About-me photo (big right image like screenshot)
+--------------------------- */
+.section.padding .wrap.flex.card{
+  align-items: stretch;   /* makes the image match the text height */
+  gap: 2rem;
+}
+
+.about-me-header{
+  flex: 1.05;
+}
+
+.about-me-image{
+  flex: 1.25;
+  padding-top: 0 !important;  /* remove old spacing */
+  display: flex;
+}
+
+.about-me-image img{
+  width: 100%;
+  height: 100%;
+  min-height: 520px;      /* gives the “big” look like your screenshot */
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 0 !important;  /* remove old ring padding */
+  background: none !important;
+  transform: none !important; /* remove old scale() */
+}
+
+@media (max-width: 900px){
+  .section.padding .wrap.flex.card{
+    flex-direction: column;
+  }
+  .about-me-image img{
+    min-height: 320px;
+  }
+}
+
+/* ---------------------------
+   FIX 2: Video visible (not audio-only)
+--------------------------- */
+.media-player[data-media-type="video"]{
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #03140f;
+}
+
+.media-player[data-media-type="video"] video{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain; /* use cover if you prefer cropping */
+  background: #000;
+}
+
+/* ---------------------------
+   FIX 3: Resume iframe matches your website frames
+--------------------------- */
+.iframe-wrap-resume{
+  margin-top: 6rem !important;
+  height: 80vh;
+  aspect-ratio: auto; /* override the default 16:9 */
+}
+
+.iframe-wrap-resume::after{
+  content: "Resume";
+  position: absolute;
+  top: -25%;
+  color: #00f89f;
+  font: var(--font);
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: radial-gradient(
+      200% 150% at 50% 50%,
+      rgba(0, 255, 163, 0.12),
+      transparent 60%
+    ),
+    linear-gradient(transparent, transparent);
+}
