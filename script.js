@@ -1,4 +1,4 @@
-/* Genoo-inspired SPA routing + clean, organized interactions
+/* Genoo-inspired UX + dynamic background + hash routing
    Works on GitHub Pages (hash routes).
 */
 (() => {
@@ -39,7 +39,6 @@
   const ROUTE_MAP = new Map(ROUTES.map((r) => [r.id, r]));
 
   function getRouteFromHash() {
-    // hash format: "#/impact"
     const raw = (location.hash || "").trim();
     const m = raw.match(/^#\/([a-z0-9-]+)$/i);
     const id = m ? m[1].toLowerCase() : "home";
@@ -120,7 +119,6 @@
     video.appendChild(source);
 
     player.appendChild(video);
-    // Try to autoplay after user interaction
     video.play().catch(() => {});
   }
 
@@ -133,7 +131,6 @@
     iframe.referrerPolicy = "strict-origin-when-cross-origin";
     player.appendChild(iframe);
 
-    // Add a small open button at bottom-right
     const open = document.createElement("a");
     open.href = src;
     open.target = "_blank";
@@ -148,20 +145,17 @@
 
     const type = (player.dataset.mediaType || "").toLowerCase();
     const src = player.dataset.src;
-
     if (!src) return;
 
     try {
       if (type === "youtube") injectYouTube(player, src);
       else if (type === "video") injectVideo(player, src);
       else if (type === "pdf") injectPDF(player, src);
-    } catch (e) {
-      // Last-resort: open in new tab
+    } catch {
       window.open(src, "_blank", "noopener");
     }
   }
 
-  // Event delegation for media clicks (works across all pages)
   document.addEventListener("click", (e) => {
     const player = e.target.closest(".media-player");
     if (!player) return;
@@ -187,7 +181,7 @@
         <stop offset='100%' stop-color='#073224'/>
       </linearGradient></defs>
       <rect width='100%' height='100%' fill='url(#g)'/>
-      <rect x='14' y='14' width='${w - 28}' height='${h - 28}' rx='14' ry='14' fill='none' stroke='rgba(0,255,163,0.35)' stroke-width='2'/>
+      <rect x='14' y='14' width='${w - 28}' height='${h - 28}' rx='14' ry='14' fill='none' stroke='rgba(42,208,83,0.35)' stroke-width='2'/>
       <g fill='#b9ffe5' font-family='system-ui, sans-serif' font-size='28'>
         <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>${text}</text>
       </g>
@@ -249,14 +243,12 @@
   const cmdList = qs("#cmdList");
 
   function openCmd() {
-    if (!cmd) return;
-    cmd.setAttribute("aria-hidden", "false");
-    setTimeout(() => cmdInput && cmdInput.focus(), 30);
+    cmd?.setAttribute("aria-hidden", "false");
+    setTimeout(() => cmdInput?.focus(), 30);
   }
 
   function closeCmd() {
-    if (!cmd) return;
-    cmd.setAttribute("aria-hidden", "true");
+    cmd?.setAttribute("aria-hidden", "true");
     if (cmdInput) cmdInput.value = "";
     renderCmdList("");
   }
@@ -306,7 +298,6 @@
     items[next].scrollIntoView({ block: "nearest" });
   }
 
-  // Command palette events
   document.addEventListener("click", (e) => {
     const openBtn = e.target.closest("[data-open-cmd]");
     if (openBtn) {
@@ -327,10 +318,10 @@
       const href = li.getAttribute("data-go");
       if (href) location.hash = href;
       closeCmd();
+      return;
     }
 
-    // Click outside panel closes
-    if (cmd && cmd.getAttribute("aria-hidden") === "false") {
+    if (cmd?.getAttribute("aria-hidden") === "false") {
       const panel = e.target.closest(".cmd-panel");
       if (!panel) closeCmd();
     }
@@ -339,7 +330,6 @@
   cmdInput?.addEventListener("input", () => renderCmdList(cmdInput.value));
 
   document.addEventListener("keydown", (e) => {
-    // Toggle palette: Ctrl/Meta + K
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
       if (cmd?.getAttribute("aria-hidden") === "false") closeCmd();
@@ -347,7 +337,6 @@
       return;
     }
 
-    // If palette open, it owns keyboard navigation
     if (cmd?.getAttribute("aria-hidden") === "false") {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -373,12 +362,18 @@
   const main = qs("#main");
 
   function setActiveNav(routeId) {
-    qsa(".nav-link").forEach((a) => {
+    qsa(".topbar-link").forEach((a) => {
       const href = a.getAttribute("href") || "";
       const active = href === `#/` + routeId;
       if (active) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
+  }
+
+  function startHeroEntranceIfPresent(container) {
+    const hero = qs(".hero-genoo", container);
+    if (!hero) return;
+    requestAnimationFrame(() => hero.classList.add("hero-in"));
   }
 
   function renderRoute(routeId) {
@@ -388,10 +383,8 @@
     const tpl = route ? qs(`#${route.template}`) : null;
     if (!tpl) return;
 
-    // Title
     document.title = `Abdelrahman Osman — ${route.title}`;
 
-    // Replace content
     main.innerHTML = "";
     const node = document.importNode(tpl.content, true);
     const page = document.createElement("div");
@@ -399,24 +392,16 @@
     page.appendChild(node);
     main.appendChild(page);
 
-    // Focus main for accessibility
     main.focus({ preventScroll: true });
-
-    // Animate page in
     requestAnimationFrame(() => page.classList.add("in"));
+    window.scrollTo({ top: 0, behavior: "auto" });
 
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
-
-    // Page init
     initReveal(main);
     initImageFallbacks(main);
     initContactForm(main);
+    startHeroEntranceIfPresent(main);
 
-    // Set nav state
     setActiveNav(routeId);
-
-    // Rebuild command list selection base
     renderCmdList(cmdInput ? cmdInput.value : "");
   }
 
@@ -426,12 +411,184 @@
   }
 
   // ----------------------------
+  // Dynamic Background Canvas
+  // ----------------------------
+  function initBackground() {
+    const canvas = qs("#bgCanvas");
+    if (!canvas) return;
+
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const ctx = canvas.getContext("2d", { alpha: true });
+
+    let w = 0, h = 0, dpr = 1;
+    let stars = [];
+    let glows = [];
+    let raf = null;
+    let last = performance.now();
+
+    const pointer = { x: 0.5, y: 0.45 };
+
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        pointer.x = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
+        pointer.y = Math.min(1, Math.max(0, e.clientY / window.innerHeight));
+      },
+      { passive: true }
+    );
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // particle density
+      const target = Math.floor((w * h) / 22000);
+      const count = Math.max(80, Math.min(180, target));
+      stars = Array.from({ length: count }, () => ({
+        x: rand(0, w),
+        y: rand(0, h),
+        r: rand(0.6, 1.8),
+        a: rand(0.10, 0.55),
+        vx: rand(-10, 10) / 120,
+        vy: rand(-10, 10) / 120,
+      }));
+
+      glows = [
+        { x: w * 0.25, y: h * 0.35, r: Math.min(w, h) * 0.55, vx: 0.06, vy: 0.03 },
+        { x: w * 0.62, y: h * 0.45, r: Math.min(w, h) * 0.45, vx: -0.05, vy: 0.04 },
+        { x: w * 0.80, y: h * 0.30, r: Math.min(w, h) * 0.40, vx: 0.04, vy: -0.05 },
+      ];
+    }
+
+    function drawGlow(gx, gy, gr, intensity) {
+      const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+      grad.addColorStop(0, `rgba(42, 208, 83, ${0.10 * intensity})`);
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function frame(now) {
+      const dt = Math.min(0.033, (now - last) / 1000);
+      last = now;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // base
+      ctx.fillStyle = "rgba(0,0,0,0.88)";
+      ctx.fillRect(0, 0, w, h);
+
+      // pointer parallax
+      const px = (pointer.x - 0.5) * 40;
+      const py = (pointer.y - 0.5) * 30;
+
+      for (const g of glows) {
+        if (!reduceMotion) {
+          g.x += g.vx;
+          g.y += g.vy;
+          if (g.x < -g.r) g.x = w + g.r;
+          if (g.x > w + g.r) g.x = -g.r;
+          if (g.y < -g.r) g.y = h + g.r;
+          if (g.y > h + g.r) g.y = -g.r;
+        }
+        drawGlow(g.x + px, g.y + py, g.r, 1);
+      }
+
+      // stars
+      ctx.save();
+      ctx.shadowColor = "rgba(42,208,83,0.55)";
+      ctx.shadowBlur = 10;
+
+      for (const s of stars) {
+        if (!reduceMotion) {
+          s.x += s.vx * (dt * 60);
+          s.y += s.vy * (dt * 60);
+          if (s.x < -10) s.x = w + 10;
+          if (s.x > w + 10) s.x = -10;
+          if (s.y < -10) s.y = h + 10;
+          if (s.y > h + 10) s.y = -10;
+        }
+
+        ctx.fillStyle = `rgba(42,208,83,${s.a})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // connections
+      ctx.shadowBlur = 0;
+      ctx.lineWidth = 1;
+
+      const maxD = 140;
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const a = stars[i], b = stars[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d = Math.hypot(dx, dy);
+          if (d > maxD) continue;
+          const alpha = (1 - d / maxD) * 0.10;
+          ctx.strokeStyle = `rgba(42,208,83,${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.restore();
+      raf = requestAnimationFrame(frame);
+    }
+
+    function start() {
+      resize();
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+
+    let rt = null;
+    window.addEventListener(
+      "resize",
+      () => {
+        clearTimeout(rt);
+        rt = setTimeout(resize, 120);
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && raf) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      } else if (!document.hidden && !raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    });
+
+    start();
+  }
+
+  // ----------------------------
   // Boot
   // ----------------------------
   function boot() {
     setYear();
     ensureHash();
     renderCmdList("");
+    initBackground();
     onRouteChange();
   }
 
