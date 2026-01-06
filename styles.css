@@ -971,6 +971,19 @@ textarea:focus-visible,
   position: absolute;
   top: -5%;
 }
+.pdf-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 12px;
+}
+
+.pdf-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+}
 
 .selected-work {
   padding-bottom: 42px;
