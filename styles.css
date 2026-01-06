@@ -1157,41 +1157,58 @@ textarea:focus-visible,
 /* ---------------------------
    FIX 1: About-me photo (big right image like screenshot)
 --------------------------- */
-.section.padding .wrap.flex.card{
-  align-items: stretch;   /* makes the image match the text height */
+/* === About Me Section: circular photo aligned with text height === */
+.section.padding .wrap.flex.card {
+  align-items: center; /* vertically align image with text */
+  justify-content: space-between;
   gap: 2rem;
 }
 
-.about-me-header{
-  flex: 1.05;
-}
-
-.about-me-image{
-  flex: 1.25;
-  padding-top: 0 !important;  /* remove old spacing */
+.about-me-header {
+  flex: 1.1;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.about-me-image img{
-  width: 50%;
-  height: 50%;
-  min-height: 520px;      /* gives the “big” look like your screenshot */
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  padding: 0 !important;  /* remove old ring padding */
-  background: none !important;
-  transform: none !important; /* remove old scale() */
+.about-me-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (max-width: 900px){
-  .section.padding .wrap.flex.card{
+.about-me-image img {
+  width: 22rem;            /* large visible size */
+  height: 22rem;           /* equal width/height = perfect circle */
+  border-radius: 50%;      /* circle */
+  object-fit: cover;       /* ensures no distortion */
+  border: 0.12rem solid #00f89f;
+  padding: 0.25rem;
+  box-shadow: 0 0 20px rgba(0, 255, 163, 0.25);
+  background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    radial-gradient(
+      100% 100% at 0 0,
+      rgba(0, 255, 163, 0.32),
+      rgba(0, 255, 163, 0.08) 40%,
+      #00f89f
+    )
+    border-box;
+}
+
+@media (max-width: 900px) {
+  .section.padding .wrap.flex.card {
     flex-direction: column;
+    align-items: center;
   }
-  .about-me-image img{
-    min-height: 320px;
+
+  .about-me-image img {
+    width: 15rem;
+    height: 15rem;
+    margin-top: 1rem;
   }
 }
+
 
 /* ---------------------------
    FIX 2: Video visible (not audio-only)
