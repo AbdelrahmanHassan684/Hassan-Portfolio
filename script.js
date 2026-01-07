@@ -1,6 +1,6 @@
 /* Genoo-inspired UX + dynamic background + hash routing
    + NEW Story page
-   + Click-to-light glow on frames/cards
+   + Touch/Pointer-to-light glow on frames/cards
    + Auto-typing hero name
 */
 (() => {
@@ -27,7 +27,7 @@
     window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
 
   // ----------------------------
-  // Click-to-light glow (tables/frames/cards)
+  // Touch/Pointer-to-light glow (tables/frames/cards)
   // ----------------------------
   const GLOW_SELECTOR = [
     ".glow-surface",
@@ -66,12 +66,41 @@
     pulseTimer = setTimeout(() => el.classList.remove("is-pulse"), 980);
   }
 
-  document.addEventListener("click", (e) => {
-    const t = e.target.closest(GLOW_SELECTOR);
+  function glowFromEvent(e) {
+    const t = e?.target && e.target.closest ? e.target.closest(GLOW_SELECTOR) : null;
     if (t) setGlow(t);
     else setGlow(null);
-  });
+  }
 
+  // IMPORTANT CHANGE:
+  // - pointerdown/touchstart triggers glow immediately (mobile touch, mouse down, pen)
+  // - no need to wait for click
+  if ("PointerEvent" in window) {
+    document.addEventListener(
+      "pointerdown",
+      (e) => {
+        // only primary pointer (avoid multi-touch noise)
+        if (e.isPrimary === false) return;
+        // ignore right-click (desktop)
+        if (typeof e.button === "number" && e.button !== 0) return;
+        glowFromEvent(e);
+      },
+      { passive: true }
+    );
+  } else {
+    // Fallback for older browsers
+    document.addEventListener("touchstart", glowFromEvent, { passive: true });
+    document.addEventListener(
+      "mousedown",
+      (e) => {
+        if (e.button !== 0) return;
+        glowFromEvent(e);
+      },
+      { passive: true }
+    );
+  }
+
+  // Keep keyboard accessibility glow
   document.addEventListener("focusin", (e) => {
     const t = e.target.closest(GLOW_SELECTOR);
     if (t) setGlow(t);
@@ -702,5 +731,6 @@
   window.addEventListener("hashchange", onRouteChange);
   window.addEventListener("DOMContentLoaded", boot);
 })();
+
 
 
