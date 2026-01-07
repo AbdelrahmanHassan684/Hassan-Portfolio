@@ -1130,5 +1130,55 @@ kbd {
   .scroll-down-icon { animation: none !important; }
   .hero-cursor { animation: none !important; opacity: 1 !important; }
 }
+/* =========================================================
+   HOVER + PRESS GLOW (NO CLICK REQUIRED)
+   - Hover: desktop mouse/trackpad
+   - Active: immediate press feedback (touch/mouse down)
+========================================================= */
+
+/* Hover glow only on devices that actually support hover */
+@media (hover: hover) and (pointer: fine) {
+  .glow-surface:hover,
+  .card:hover,
+  .stat-card:hover,
+  .skill-card:hover,
+  .honor-card:hover,
+  .media-player:hover,
+  .topbar-pill:hover,
+  .cmd-panel:hover,
+  .gallery img:hover {
+    border-color: rgba(25,255,138,0.85) !important;
+    box-shadow:
+      0 0 0 1px rgba(25,255,138,0.22),
+      0 0 30px rgba(25,255,138,0.22),
+      0 18px 70px rgba(0,0,0,0.55) !important;
+  }
+
+  /* Images that use the glow-surface-img class */
+  .glow-surface-img:hover {
+    box-shadow:
+      0 0 0 1px rgba(25,255,138,0.22),
+      0 0 26px rgba(25,255,138,0.22),
+      0 12px 44px rgba(0,0,0,0.55);
+  }
+}
+
+/* Press feedback (works on touch + mouse down)
+   Note: This is temporary only while pressed. Persistent glow is handled by JS. */
+.glow-surface:active,
+.card:active,
+.stat-card:active,
+.skill-card:active,
+.honor-card:active,
+.media-player:active,
+.topbar-pill:active,
+.cmd-panel:active,
+.gallery img:active {
+  border-color: rgba(25,255,138,0.85) !important;
+  box-shadow:
+    0 0 0 1px rgba(25,255,138,0.22),
+    0 0 30px rgba(25,255,138,0.22),
+    0 18px 70px rgba(0,0,0,0.55) !important;
+}
 
 
