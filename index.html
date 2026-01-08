@@ -648,228 +648,282 @@
     </template>
 
     <!-- WORK -->
-    <template id="tpl-work">
-      <section class="section page-surface">
-        <div class="wrap">
-          <header class="section-head reveal">
-            <h1 class="page-title">Selected Work</h1>
-            <p class="muted">Engineering · AI & CS · Robotics</p>
-          </header>
+<template id="tpl-work">
+  <section class="section page-surface">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <h1 class="page-title">Selected Work</h1>
+        <p class="muted">Engineering · AI &amp; CS · Robotics</p>
+      </header>
 
-          <div class="grid cards">
-            <!-- EchoHand -->
-            <article class="card project reveal glow-surface">
-              <div class="card-top">
-                <div class="card-title-row">
-                  <h2 class="card-title">EchoHand</h2>
-                  <span class="badge">Robotics</span>
-                </div>
+      <div class="grid cards">
+        <!-- EchoHand -->
+        <article class="card project reveal glow-surface">
+          <div class="card-top">
+            <div class="card-title-row">
+              <h2 class="card-title">EchoHand</h2>
+              <span class="badge">Robotics</span>
+            </div>
 
-                <p class="eco">
-                  Deaf and mute individuals often face barriers when communicating
-                  with people unfamiliar with sign language, limiting expression
-                  and understanding. With an estimated 70 million deaf people
-                  worldwide, inclusive solutions are vital. Our project addresses
-                  this gap through a wearable glove that enables two-way
-                  communication. First, the glove detects and interprets sign-language
-                  hand movements, converting them into audible speech so hearing
-                  users can understand without knowing the signs. Second, it
-                  incorporates speech-to-text, capturing spoken language and
-                  displaying it on an LCD for the deaf user to read. Together,
-                  these features translate sign into speech and speech into text,
-                  enabling smoother, accessible interactions.
-                </p>
+            <p class="eco">
+              Deaf and mute individuals often face barriers when communicating
+              with people unfamiliar with sign language, limiting expression
+              and understanding. With an estimated 70 million deaf people
+              worldwide, inclusive solutions are vital. Our project addresses
+              this gap through a wearable glove that enables two-way
+              communication. First, the glove detects and interprets sign-language
+              hand movements, converting them into audible speech so hearing
+              users can understand without knowing the signs. Second, it
+              incorporates speech-to-text, capturing spoken language and
+              displaying it on an LCD for the deaf user to read. Together,
+              these features translate sign into speech and speech into text,
+              enabling smoother, accessible interactions.
+            </p>
+          </div>
+
+          <div class="media">
+            <div
+              class="media-player media-16x9 glow-surface"
+              role="button"
+              tabindex="0"
+              aria-label="Play EchoHand YouTube video"
+              data-media-type="youtube"
+              data-src="https://www.youtube.com/embed/yaHb61tZCxA"
+            >
+              <div class="play-overlay">
+                <div class="play-button" aria-hidden="true"></div>
               </div>
+            </div>
 
-              <div class="media">
-                <div
-                  class="media-player media-16x9 glow-surface"
-                  role="button"
-                  tabindex="0"
-                  aria-label="Play EchoHand YouTube video"
-                  data-media-type="youtube"
-                  data-src="https://www.youtube.com/embed/yaHb61tZCxA"
-                >
-                  <div class="play-overlay">
-                    <div class="play-button" aria-hidden="true"></div>
-                  </div>
-                </div>
-
-                <div
-                  class="media-player pdf-frame glow-surface"
-                  role="button"
-                  tabindex="0"
-                  aria-label="Open EchoHand Research Paper (PDF)"
-                  data-media-type="pdf"
-                  data-src="Final%20Version%20Echohand%20Research%20Paper%20MDPI.pdf"
-                >
-                  <div class="pdf-overlay">
-                    <div class="pdf-title">EchoHand Research Paper (PDF)</div>
-                    <div class="pdf-actions">
-                      <span class="btn btn-ghost">View PDF</span>
-                      <a
-                        class="btn"
-                        href="Final%20Version%20Echohand%20Research%20Paper%20MDPI.pdf"
-                        target="_blank"
-                        rel="noopener"
-                        >Open in New Tab</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Bridging the Communication Gap -->
-            <article class="card project reveal glow-surface">
-              <div class="card-top">
-                <div class="card-title-row">
-                  <h2 class="card-title">Bridging the Communication Gap</h2>
-                  <span class="badge">NLP</span>
-                </div>
-
-                <p class="eco">
-                  I developed an AI- and API-based system to render complex Arabic
-                  poetry, and other Arabic media such as films, videos, and comics,
-                  into accessible English while preserving meaning and cultural
-                  nuance. The platform combines Arabic speech/text ingestion with
-                  context-aware translation and a post-editing layer that resolves
-                  idioms, metaphors, and allusions, producing readable English prose
-                  or subtitles alongside literal glosses. By prioritizing semantic
-                  fidelity over word-for-word equivalence, it bridges a persistent
-                  communication gap between Arabic and English audiences.
-                </p>
-              </div>
-
-              <div class="media">
-                <div
-                  class="media-player media-16x9 glow-surface"
-                  role="button"
-                  tabindex="0"
-                  aria-label="Play sample transcript video"
-                  data-media-type="video"
-                  data-src="Media/Videos/Untitled%20design.mp4"
-                >
-                  <div class="play-overlay">
-                    <div class="play-button" aria-hidden="true"></div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Echolex -->
-            <article class="card project reveal glow-surface">
-              <div class="card-top">
-                <div class="card-title-row">
-                  <h2 class="card-title">Echolex</h2>
-                  <span class="badge">EdTech</span>
-                </div>
-
-                <p class="eco">
-                  Echolex is a Telegram chatbot I built to tutor Arabic learners.
-                  It accepts text or voice, transcribes speech, reasons over chat
-                  history, and replies with either text or synthesized audio while
-                  maintaining succinct memory for continuity. I designed role-aware
-                  prompts, tested with students, and refined handlers for /start,
-                  echo, and message routing. I developed Echolex in partnership
-                  with an OpenAI mentor; our YC accelerator application ranked in
-                  the top 5%. As a solo extension, I built a tool that transcribes
-                  audio in any language and generates accurate English subtitle
-                  files. Together, these tools expand access to learning and
-                  real-time communication.
-                </p>
-
-                <div class="note-row">
+            <div
+              class="media-player pdf-frame glow-surface"
+              role="button"
+              tabindex="0"
+              aria-label="Open EchoHand Research Paper (PDF)"
+              data-media-type="pdf"
+              data-src="Final%20Version%20Echohand%20Research%20Paper%20MDPI.pdf"
+            >
+              <div class="pdf-overlay">
+                <div class="pdf-title">EchoHand Research Paper (PDF)</div>
+                <div class="pdf-actions">
+                  <span class="btn btn-ghost">View PDF</span>
                   <a
-                    class="btn btn-ghost"
-                    href="https://github.com/AbdelrahmanOthman33/Talentsorb-AI"
+                    class="btn"
+                    href="Final%20Version%20Echohand%20Research%20Paper%20MDPI.pdf"
                     target="_blank"
                     rel="noopener"
-                    >View GitHub Repo</a
+                    >Open in New Tab</a
                   >
                 </div>
               </div>
+            </div>
+          </div>
+        </article>
 
-              <div class="media">
-                <div
-                  class="media-player media-16x9 glow-surface"
-                  role="button"
-                  tabindex="0"
-                  aria-label="Play Echolex demo"
-                  data-media-type="video"
-                  data-src="Media/Videos/videoplayback.mp4"
-                >
-                  <div class="play-overlay">
-                    <div class="play-button" aria-hidden="true"></div>
-                  </div>
-                </div>
-              </div>
-            </article>
+        <!-- Bridging the Communication Gap -->
+        <article class="card project reveal glow-surface">
+          <div class="card-top">
+            <div class="card-title-row">
+              <h2 class="card-title">Bridging the Communication Gap</h2>
+              <span class="badge">NLP</span>
+            </div>
 
-            <!-- LaunchX -->
-            <article class="card project reveal glow-surface">
-              <div class="card-top">
-                <div class="card-title-row">
-                  <h2 class="card-title">LaunchX (Mind-pite)</h2>
-                  <span class="badge">Venture</span>
-                </div>
-
-                <p class="eco">
-                  At the highly selective LaunchX (admit rate under 15%), I attended
-                  on a full aid ($6,995). I studied business strategy, negotiated
-                  with industry professionals, and bootstrapped my first startup
-                  (Mind-Pite), shipping a revenue-generating app, leading go-to-market
-                  strategy, and building a resilient founder mindset through 40 hours
-                  per week, 200 hours total of collaborating and forming business
-                  and technological plans.
-                </p>
-              </div>
-
-              <div class="media">
-                <div
-                  class="media-player media-16x9 glow-surface"
-                  role="button"
-                  tabindex="0"
-                  aria-label="Play LaunchX presentation"
-                  data-media-type="video"
-                  data-src="Media/Videos/Team%201%20-%20MindBite%20-%20Demo%20Day%20Video.mp4"
-                >
-                  <div class="play-overlay">
-                    <div class="play-button" aria-hidden="true"></div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- El-Shams Running Team -->
-            <article class="card project reveal glow-surface">
-              <div class="card-top">
-                <div class="card-title-row">
-                  <h2 class="card-title">El-Shams Club Running Team</h2>
-                  <span class="badge">Social</span>
-                </div>
-
-                <p class="eco">
-                  In ninth grade, I identified the absence of a running program at
-                  El-Shams, a prominent sports club. I founded the El-Shams Running
-                  Club as an open, community-oriented initiative, recruiting and
-                  coaching 60 members in weekly sessions. I secured approximately
-                  $400 per year for transportation and venue fees and coordinated
-                  logistics and safety. I also organized four marathons at heritage
-                  sites and Cairo Stadium, engaging 200 runners. This remains one
-                  of my most meaningful activities.
-                </p>
-              </div>
-            </article>
+            <p class="eco">
+              I developed an AI- and API-based system to render complex Arabic
+              poetry, and other Arabic media such as films, videos, and comics,
+              into accessible English while preserving meaning and cultural
+              nuance. The platform combines Arabic speech/text ingestion with
+              context-aware translation and a post-editing layer that resolves
+              idioms, metaphors, and allusions, producing readable English prose
+              or subtitles alongside literal glosses. By prioritizing semantic
+              fidelity over word-for-word equivalence, it bridges a persistent
+              communication gap between Arabic and English audiences.
+            </p>
           </div>
 
-          <div class="page-actions reveal">
-            <a class="btn" href="#/honors">Honors</a>
-            <a class="btn btn-ghost" href="#/contact">Contact</a>
+          <div class="media">
+            <div
+              class="media-player media-16x9 glow-surface"
+              role="button"
+              tabindex="0"
+              aria-label="Play sample transcript video"
+              data-media-type="video"
+              data-src="Media/Videos/Untitled%20design.mp4"
+            >
+              <div class="play-overlay">
+                <div class="play-button" aria-hidden="true"></div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-    </template>
+        </article>
+
+        <!-- Echolex -->
+        <article class="card project reveal glow-surface">
+          <div class="card-top">
+            <div class="card-title-row">
+              <h2 class="card-title">Echolex</h2>
+              <span class="badge">EdTech</span>
+            </div>
+
+            <p class="eco">
+              Echolex is a Telegram chatbot I built to tutor Arabic learners.
+              It accepts text or voice, transcribes speech, reasons over chat
+              history, and replies with either text or synthesized audio while
+              maintaining succinct memory for continuity. I designed role-aware
+              prompts, tested with students, and refined handlers for /start,
+              echo, and message routing. I developed Echolex in partnership
+              with an OpenAI mentor; our YC accelerator application ranked in
+              the top 5%. As a solo extension, I built a tool that transcribes
+              audio in any language and generates accurate English subtitle
+              files. Together, these tools expand access to learning and
+              real-time communication.
+            </p>
+
+            <div class="note-row">
+              <a
+                class="btn btn-ghost"
+                href="https://github.com/AbdelrahmanOthman33/Talentsorb-AI"
+                target="_blank"
+                rel="noopener"
+                >View GitHub Repo</a
+              >
+            </div>
+          </div>
+
+          <div class="media">
+            <div
+              class="media-player media-16x9 glow-surface"
+              role="button"
+              tabindex="0"
+              aria-label="Play Echolex demo"
+              data-media-type="video"
+              data-src="Media/Videos/videoplayback.mp4"
+            >
+              <div class="play-overlay">
+                <div class="play-button" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- LaunchX -->
+        <article class="card project reveal glow-surface">
+          <div class="card-top">
+            <div class="card-title-row">
+              <h2 class="card-title">LaunchX (Mind-pite)</h2>
+              <span class="badge">Venture</span>
+            </div>
+
+            <p class="eco">
+              At the highly selective LaunchX (admit rate under 15%), I attended
+              on a full aid ($6,995). I studied business strategy, negotiated
+              with industry professionals, and bootstrapped my first startup
+              (Mind-Pite), shipping a revenue-generating app, leading go-to-market
+              strategy, and building a resilient founder mindset through 40 hours
+              per week, 200 hours total of collaborating and forming business
+              and technological plans.
+            </p>
+          </div>
+
+          <div class="media">
+            <div
+              class="media-player media-16x9 glow-surface"
+              role="button"
+              tabindex="0"
+              aria-label="Play LaunchX presentation"
+              data-media-type="video"
+              data-src="Media/Videos/Team%201%20-%20MindBite%20-%20Demo%20Day%20Video.mp4"
+            >
+              <div class="play-overlay">
+                <div class="play-button" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- UCSC SIP (ELE-03) -->
+        <article class="card project reveal glow-surface">
+          <div class="card-top">
+            <div class="card-title-row">
+              <h2 class="card-title">UCSC SIP — Autoencoders in Wiretap Channels (ELE‑03)</h2>
+              <span class="badge">Research</span>
+            </div>
+
+            <p class="eco">
+              <strong>Abstract:</strong> This project investigates end-to-end, deep learning–based
+              physical-layer communication for wiretap channels using autoencoders. The objective is
+              to enable reliable decoding for the legitimate receiver (Bob) while reducing information
+              leakage to an eavesdropper (Eve) under noisy and varying-SNR conditions. We implemented
+              and iteratively improved an autoencoder communication system and evaluated reliability
+              and secrecy-related behavior using BER, BLER, and leakage-related bounds.
+            </p>
+
+            <p class="eco">
+              <strong>Description:</strong> Fully funded 8-week research experience made possible through
+              the UCSC Science Internship Program (SIP) in the Electrical and Computer Engineering track.
+              After selecting this field, I joined the ELE-03 research group, “Autoencoders in Wiretap Channels,”
+              collaborating daily to understand the underlying theory, implement and improve the autoencoder
+              system, and run experiments across varying SNR regimes. I worked under my primary mentor,
+              Abdelrahman Elfikky, and secondary mentor, Adam Ramaha, and evaluated system performance using
+              BER, BLER, and leakage-related bounds overall.
+            </p>
+          </div>
+
+          <div class="media">
+            <div
+              class="media-player media-16x9 glow-surface"
+              role="button"
+              tabindex="0"
+              aria-label="Open UCSC SIP research abstract (PDF)"
+              data-media-type="pdf"
+              data-src="SIP%20at%20UCSC%20research%20abstract.pdf"
+            >
+              <div class="pdf-overlay">
+                <div class="pdf-title">UCSC SIP Research Abstract (PDF)</div>
+                <div class="pdf-actions">
+                  <span class="btn btn-ghost">View PDF</span>
+                  <a
+                    class="btn"
+                    href="SIP%20at%20UCSC%20research%20abstract.pdf"
+                    target="_blank"
+                    rel="noopener"
+                    >Open in New Tab</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- El-Shams Running Team -->
+        <article class="card project reveal glow-surface">
+          <div class="card-top">
+            <div class="card-title-row">
+              <h2 class="card-title">El-Shams Club Running Team</h2>
+              <span class="badge">Social</span>
+            </div>
+
+            <p class="eco">
+              In ninth grade, I identified the absence of a running program at
+              El-Shams, a prominent sports club. I founded the El-Shams Running
+              Club as an open, community-oriented initiative, recruiting and
+              coaching 60 members in weekly sessions. I secured approximately
+              $400 per year for transportation and venue fees and coordinated
+              logistics and safety. I also organized four marathons at heritage
+              sites and Cairo Stadium, engaging 200 runners. This remains one
+              of my most meaningful activities.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="page-actions reveal">
+        <a class="btn" href="#/honors">Honors</a>
+        <a class="btn btn-ghost" href="#/contact">Contact</a>
+      </div>
+    </div>
+  </section>
+</template>
 
     <!-- HONORS -->
     <template id="tpl-honors">
