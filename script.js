@@ -20,10 +20,7 @@
   }
 
   function encodeMailto(s) {
-    return encodeURIComponent(s).replace(
-      /[!'()*]/g,
-      (c) => "%" + c.charCodeAt(0).toString(16)
-    );
+    return encodeURIComponent(s).replace(/[!'()*]/g, (c) => "%" + c.charCodeAt(0).toString(16));
   }
 
   const reduceMotion =
@@ -70,8 +67,7 @@
   }
 
   function glowFromEvent(e) {
-    const t =
-      e?.target && e.target.closest ? e.target.closest(GLOW_SELECTOR) : null;
+    const t = e?.target && e.target.closest ? e.target.closest(GLOW_SELECTOR) : null;
     if (t) setGlow(t);
     else setGlow(null);
   }
@@ -258,10 +254,7 @@
   });
 
   document.addEventListener("keydown", (e) => {
-    const player =
-      e.target && e.target.closest
-        ? e.target.closest(".media-player")
-        : null;
+    const player = e.target && e.target.closest ? e.target.closest(".media-player") : null;
     if (!player) return;
 
     if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
@@ -327,9 +320,7 @@
       }
 
       const body = ["Name: " + name, "Email: " + email, "", message].join("\n");
-      const mailto = `mailto:?subject=${encodeMailto(
-        subject
-      )}&body=${encodeMailto(body)}`;
+      const mailto = `mailto:?subject=${encodeMailto(subject)}&body=${encodeMailto(body)}`;
 
       status.textContent = "Opening your email client…";
       setTimeout(() => (location.href = mailto), 60);
@@ -358,9 +349,7 @@
     if (!cmdList) return;
 
     const q = (filter || "").toLowerCase().trim();
-    const items = ROUTES.filter((r) =>
-      (r.label || "").toLowerCase().includes(q)
-    );
+    const items = ROUTES.filter((r) => (r.label || "").toLowerCase().includes(q));
 
     cmdList.innerHTML = "";
     items.forEach((r, idx) => {
@@ -383,8 +372,7 @@
   function cmdSelectedHref() {
     if (!cmdList) return null;
     const selected =
-      cmdList.querySelector('[aria-selected="true"]') ||
-      cmdList.querySelector("li[data-go]");
+      cmdList.querySelector('[aria-selected="true"]') || cmdList.querySelector("li[data-go]");
     return selected ? selected.getAttribute("data-go") : null;
   }
 
@@ -393,9 +381,7 @@
     const items = qsa("li[data-go]", cmdList);
     if (!items.length) return;
 
-    const i = items.findIndex(
-      (x) => x.getAttribute("aria-selected") === "true"
-    );
+    const i = items.findIndex((x) => x.getAttribute("aria-selected") === "true");
     const cur = i < 0 ? 0 : i;
     const next = Math.max(0, Math.min(items.length - 1, cur + dir));
 
@@ -507,365 +493,6 @@
   }
 
   // ----------------------------
-  // Hero Neural Network (Home-only overlay)
-  // ----------------------------
-  let stopHeroNeural = null;
-
-  function initHeroNeuralNet(container) {
-    const canvas = qs("#heroNeural", container);
-    if (!canvas) return null;
-
-    const ctx = canvas.getContext("2d", { alpha: true });
-    if (!ctx) return null;
-
-    // Helpers
-    const clamp01 = (v) => Math.max(0, Math.min(1, v));
-    const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3);
-    const ramp = (t, a, b) => easeOutCubic(clamp01((t - a) / (b - a)));
-
-    // Network layout (video-style: 4-8-8-4)
-    const layers = [4, 8, 8, 4];
-
-    let w = 1,
-      h = 1,
-      dpr = 1;
-
-    // Pointer influence (subtle parallax)
-    const pointer = { x: 0.5, y: 0.5 };
-
-    function onPointerMove(e) {
-      const r = canvas.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      const x = (e.clientX - r.left) / r.width;
-      const y = (e.clientY - r.top) / r.height;
-      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
-      pointer.x = clamp01(x);
-      pointer.y = clamp01(y);
-    }
-
-    if ("PointerEvent" in window) {
-      window.addEventListener("pointermove", onPointerMove, { passive: true });
-    }
-
-    // Graph
-    let nodes = [];
-    let layerNodeIdxs = [];
-    let conns = [];
-    let connsByPair = [[], [], []];
-
-    // Active edges
-    let active01 = [];
-    let active12 = [];
-    let active23 = [];
-    let lastActiveSwap = 0;
-
-    function buildGraph() {
-      // Centered like the video (slightly right & slightly down)
-      const netW = Math.min(w * 0.92, 980);
-      const netH = Math.min(h * 0.62, 560);
-      const cx = w * 0.54;
-      const cy = h * 0.58;
-
-      const left = cx - netW / 2;
-      const top = cy - netH / 2;
-
-      const layerX = layers.map(
-        (_, i) => left + (netW * i) / (layers.length - 1)
-      );
-
-      nodes = [];
-      layerNodeIdxs = [];
-      let idx = 0;
-
-      for (let li = 0; li < layers.length; li++) {
-        const n = layers[li];
-        layerNodeIdxs[li] = [];
-
-        for (let j = 0; j < n; j++) {
-          const x = layerX[li];
-          const y = top + (netH * (j + 0.5)) / n;
-
-          nodes.push({
-            li,
-            j,
-            x,
-            y,
-            phase: Math.random() * Math.PI * 2,
-            pulse: Math.random() * Math.PI * 2,
-          });
-
-          layerNodeIdxs[li].push(idx);
-          idx++;
-        }
-      }
-
-      // Fully connect adjacent layers
-      conns = [];
-      connsByPair = [[], [], []];
-      let ci = 0;
-
-      for (let pair = 0; pair < layers.length - 1; pair++) {
-        const A = layerNodeIdxs[pair];
-        const B = layerNodeIdxs[pair + 1];
-
-        for (const a of A) {
-          for (const b of B) {
-            const weight = Math.pow(Math.random(), 1.7); // skew faint
-            const seed = Math.random() * Math.PI * 2;
-
-            conns.push({ a, b, pair, weight, seed });
-            connsByPair[pair].push(ci);
-            ci++;
-          }
-        }
-      }
-
-      pickActiveEdges();
-    }
-
-    function pickSome(from, count) {
-      if (!from || !from.length) return [];
-      const out = [];
-      for (let i = 0; i < count; i++) {
-        out.push(from[Math.floor(Math.random() * from.length)]);
-      }
-      return out;
-    }
-
-    function pickActiveEdges() {
-      active01 = pickSome(connsByPair[0], 18);
-      active12 = pickSome(connsByPair[1], 26);
-      active23 = pickSome(connsByPair[2], 18);
-    }
-
-    function resize() {
-      const r = canvas.getBoundingClientRect();
-      w = Math.max(1, r.width);
-      h = Math.max(1, r.height);
-
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      buildGraph();
-      renderStatic();
-    }
-
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-    resize();
-
-    function drawGlow(cx, cy, radius, alpha) {
-      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-      g.addColorStop(0, `rgba(25,255,138,${alpha})`);
-      g.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
-    }
-
-    function nodePos(node, t, px, py) {
-      const wob = 1.25;
-      return {
-        x: node.x + px + Math.sin(t * 0.85 + node.phase) * wob,
-        y: node.y + py + Math.cos(t * 0.85 + node.phase) * wob,
-      };
-    }
-
-    function pairRevealAlpha(pair, t) {
-      if (pair === 0) return ramp(t, 0.2, 1.2);
-      if (pair === 1) return ramp(t, 0.8, 1.85);
-      return ramp(t, 1.35, 2.45);
-    }
-
-    function renderFrame(now, scheduleNext) {
-      const t = (now - start) / 1000;
-
-      ctx.clearRect(0, 0, w, h);
-
-      // Central haze
-      drawGlow(w * 0.54, h * 0.58, Math.min(w, h) * 0.46, 0.12);
-
-      // Parallax
-      const px = (pointer.x - 0.5) * w * 0.03;
-      const py = (pointer.y - 0.5) * h * 0.03;
-
-      // Refresh active routes
-      if (!reduceMotion && now - lastActiveSwap > 420) {
-        lastActiveSwap = now;
-        pickActiveEdges();
-      }
-
-      // Forward-pass feel
-      const cycle = 2.4;
-      const p = (t % cycle) / cycle;
-      const hotPair = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
-
-      // Base lines
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      ctx.lineCap = "round";
-
-      for (const c of conns) {
-        const a = nodes[c.a];
-        const b = nodes[c.b];
-        const rev = pairRevealAlpha(c.pair, t);
-        if (rev <= 0) continue;
-
-        const A = nodePos(a, t, px, py);
-        const B = nodePos(b, t, px, py);
-
-        const baseAlpha = rev * (0.05 + (1 - c.weight) * 0.03) * 0.65;
-
-        ctx.strokeStyle = `rgba(25,255,138,${baseAlpha})`;
-        ctx.lineWidth = 0.7 + c.weight * 1.4;
-        ctx.shadowColor = "rgba(25,255,138,0.18)";
-        ctx.shadowBlur = 6;
-
-        ctx.beginPath();
-        ctx.moveTo(A.x, A.y);
-        ctx.lineTo(B.x, B.y);
-        ctx.stroke();
-      }
-
-      // Active lines + traveling dots
-      function drawActive(list, pairIdx) {
-        const rev = pairRevealAlpha(pairIdx, t);
-        if (rev <= 0) return;
-
-        for (const ci of list) {
-          const c = conns[ci];
-          if (!c) continue;
-
-          const a = nodes[c.a];
-          const b = nodes[c.b];
-          const A = nodePos(a, t, px, py);
-          const B = nodePos(b, t, px, py);
-
-          const pulse = 0.55 + 0.45 * Math.sin(t * 3.8 + c.seed);
-          const hotBoost = pairIdx === hotPair ? 1.35 : 1.0;
-
-          const alpha = rev * pulse * 0.22 * hotBoost;
-
-          ctx.strokeStyle = `rgba(25,255,138,${alpha})`;
-          ctx.lineWidth = 1.6 + c.weight * 2.8;
-          ctx.shadowColor = "rgba(25,255,138,0.45)";
-          ctx.shadowBlur = 14;
-
-          ctx.beginPath();
-          ctx.moveTo(A.x, A.y);
-          ctx.lineTo(B.x, B.y);
-          ctx.stroke();
-
-          const travel = (t * 0.75 + c.seed / (Math.PI * 2)) % 1;
-          const tx = A.x + (B.x - A.x) * travel;
-          const ty = A.y + (B.y - A.y) * travel;
-
-          ctx.fillStyle = `rgba(25,255,138,${alpha * 0.85})`;
-          ctx.shadowBlur = 16;
-
-          ctx.beginPath();
-          ctx.arc(tx, ty, 1.9 + c.weight * 1.6, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      drawActive(active01, 0);
-      drawActive(active12, 1);
-      drawActive(active23, 2);
-
-      ctx.restore();
-
-      // Nodes
-      const nodesIn = ramp(t, 0.0, 0.65);
-
-      for (const n of nodes) {
-        const P = nodePos(n, t, px, py);
-
-        const isEdgeLayer = n.li === 0 || n.li === layers.length - 1;
-        const baseR = isEdgeLayer ? 11 : 9;
-
-        const pulse = 0.62 + 0.38 * Math.sin(t * 2.1 + n.pulse);
-        const isHot = n.li === hotPair || n.li === hotPair + 1;
-        const glow = 0.22 + 0.18 * pulse + (isHot ? 0.18 : 0);
-
-        const r =
-          baseR *
-          (0.25 + 0.75 * nodesIn) *
-          (0.86 + 0.14 * pulse);
-
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-
-        ctx.shadowColor = "rgba(25,255,138,0.85)";
-        ctx.shadowBlur = 22 * glow;
-        ctx.fillStyle = `rgba(25,255,138,${0.22 * glow})`;
-
-        ctx.beginPath();
-        ctx.arc(P.x, P.y, r * 1.55, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.shadowBlur = 18 * glow;
-        ctx.fillStyle = `rgba(25,255,138,${0.66 + 0.12 * glow})`;
-
-        ctx.beginPath();
-        ctx.arc(P.x, P.y, r, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = "rgba(255,255,255,0.10)";
-        ctx.beginPath();
-        ctx.arc(
-          P.x - r * 0.2,
-          P.y - r * 0.2,
-          r * 0.42,
-          0,
-          Math.PI * 2
-        );
-        ctx.fill();
-
-        ctx.strokeStyle = "rgba(255,255,255,0.12)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(P.x, P.y, r, 0, Math.PI * 2);
-        ctx.stroke();
-
-        ctx.restore();
-      }
-
-      if (scheduleNext) raf = requestAnimationFrame(loop);
-    }
-
-    function renderStatic() {
-      const fakeNow = start + 4500;
-      renderFrame(fakeNow, false);
-    }
-
-    let raf = null;
-    const start = performance.now();
-
-    function loop(now) {
-      renderFrame(now, true);
-    }
-
-    if (reduceMotion) {
-      renderStatic();
-      return () => {
-        ro.disconnect();
-        window.removeEventListener("pointermove", onPointerMove);
-      };
-    }
-
-    raf = requestAnimationFrame(loop);
-
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-      ro.disconnect();
-      window.removeEventListener("pointermove", onPointerMove);
-    };
-  }
-
-  // ----------------------------
   // Router render
   // ----------------------------
   const main = qs("#main");
@@ -884,12 +511,6 @@
 
     // stop any running typing (new route => new run id)
     typingRunId += 1;
-
-    // stop hero neural net from previous route
-    if (stopHeroNeural) {
-      stopHeroNeural();
-      stopHeroNeural = null;
-    }
 
     // clear any active glow selection
     if (activeGlow) activeGlow.classList.remove("is-active", "is-pulse");
@@ -920,9 +541,6 @@
     // typing only if hero exists
     runTyping(main).catch(() => {});
 
-    // start hero neural net (Home route has the canvas; other routes return null)
-    stopHeroNeural = initHeroNeuralNet(main);
-
     setActiveNav(routeId);
     renderCmdList(cmdInput ? cmdInput.value : "");
   }
@@ -941,9 +559,7 @@
 
     const ctx = canvas.getContext("2d", { alpha: true });
 
-    let w = 0,
-      h = 0,
-      dpr = 1;
+    let w = 0, h = 0, dpr = 1;
     let stars = [];
     let glows = [];
     let raf = null;
@@ -983,33 +599,15 @@
         x: rand(0, w),
         y: rand(0, h),
         r: rand(0.6, 1.8),
-        a: rand(0.1, 0.55),
+        a: rand(0.10, 0.55),
         vx: rand(-10, 10) / 120,
         vy: rand(-10, 10) / 120,
       }));
 
       glows = [
-        {
-          x: w * 0.25,
-          y: h * 0.35,
-          r: Math.min(w, h) * 0.55,
-          vx: 0.06,
-          vy: 0.03,
-        },
-        {
-          x: w * 0.62,
-          y: h * 0.45,
-          r: Math.min(w, h) * 0.45,
-          vx: -0.05,
-          vy: 0.04,
-        },
-        {
-          x: w * 0.8,
-          y: h * 0.3,
-          r: Math.min(w, h) * 0.4,
-          vx: 0.04,
-          vy: -0.05,
-        },
+        { x: w * 0.25, y: h * 0.35, r: Math.min(w, h) * 0.55, vx: 0.06, vy: 0.03 },
+        { x: w * 0.62, y: h * 0.45, r: Math.min(w, h) * 0.45, vx: -0.05, vy: 0.04 },
+        { x: w * 0.80, y: h * 0.30, r: Math.min(w, h) * 0.40, vx: 0.04, vy: -0.05 },
       ];
     }
 
@@ -1074,13 +672,11 @@
       const maxD = 140;
       for (let i = 0; i < stars.length; i++) {
         for (let j = i + 1; j < stars.length; j++) {
-          const a = stars[i],
-            b = stars[j];
-          const dx = a.x - b.x,
-            dy = a.y - b.y;
+          const a = stars[i], b = stars[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
           const d = Math.hypot(dx, dy);
           if (d > maxD) continue;
-          const alpha = (1 - d / maxD) * 0.1;
+          const alpha = (1 - d / maxD) * 0.10;
           ctx.strokeStyle = `rgba(25,255,138,${alpha})`;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
